@@ -1,9 +1,14 @@
-var express = require('express');
+var express    = require('express');
+var bodyParser = require('body-parser');
+
 var app = express();
+var router = express.Router();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 
 app.set('port', (process.env.PORT || 5000));
-
-app.use(express.static(__dirname + '/public'));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -11,6 +16,11 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
   response.render('index');
+});
+
+// TODO: temp GET api
+router.get('/api/auth', function (req, res) {
+  res.status(200).send({message:'Tes'});
 });
 
 app.listen(app.get('port'), function() {
