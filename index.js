@@ -2,7 +2,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
-var router = express.Router();
+//var router = express.Router();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -19,8 +19,8 @@ app.get('/', function(request, response) {
 });
 
 // TODO: temp GET api
-router.get('/api/auth', function (req, res) {
-  res.status(200).send({message:'Tes'});
+app.get('/api/auth', function (req, res) {
+  res.status(200).json({message:'Tes'});
 });
 
 app.listen(app.get('port'), function() {
