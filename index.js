@@ -21,7 +21,7 @@ app.get('/', function(request, response) {
 const { Client } = require('pg');
 
 // TODO: temp GET api
-app.get('/api/auth', function (req, res) {
+app.get('/api/auth', function (req, response) {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -37,7 +37,7 @@ app.get('/api/auth', function (req, res) {
     }
     client.end();
 
-    res.status(200).json({message:data});
+    response.status(200).json({message:data});
   });
 });
 
