@@ -29,7 +29,7 @@ app.get('/api/auth', function (req, response) {
 
   client.connect();
 
-  client.query('SELECT first_name FROM test', (err, res) => {
+  client.query('SELECT first_name FROM d6itatao1468j.test', (err, res) => {
     if (err) throw err;
     var data = undefined;
     for (let row of res.rows) {
