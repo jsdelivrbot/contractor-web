@@ -1,5 +1,6 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
+var pg         = require('pg');
 
 var app = express();
 //var router = express.Router();
@@ -22,23 +23,15 @@ const { Client } = require('pg');
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
+    pg.connect(connString, function(err, client, done) {
+  		if(err) response.send("Could not connect to DB: " + err);
 
-  client.connect();
-
-  client.query('SELECT first_name FROM d6itatao1468j.test', (err, res) => {
-    if (err) throw err;
-    var data = undefined;
-    for (let row of res.rows) {
-      data = JSON.stringify(row);
-    }
-    client.end();
-
-    response.status(200).json({message:data});
-  });
+  		client.query('SELECT * FROM test', function(err, result) {
+  			done();
+  			if(err) return response.send(err);
+  			response.send(result.rows);
+  		});
+  	});
 });
 
 app.listen(app.get('port'), function() {
