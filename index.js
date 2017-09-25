@@ -31,13 +31,13 @@ app.get('/api/auth', function (req, res) {
 
   client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
     if (err) throw err;
-    var res = undefined;
+    var data = undefined;
     for (let row of res.rows) {
-      res = JSON.stringify(row);
+      data = JSON.stringify(row);
     }
     client.end();
 
-    res.status(200).json({message:res});
+    res.status(200).json({message:data});
   });
 });
 
