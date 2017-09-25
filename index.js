@@ -29,7 +29,7 @@ app.get('/api/auth', function (req, response) {
 
   client.connect();
 
-  client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  client.query('SELECT first_name FROM test', (err, res) => {
     if (err) throw err;
     var data = undefined;
     for (let row of res.rows) {
