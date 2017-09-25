@@ -18,26 +18,27 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-// TODO: temp GET api
-app.get('/api/auth', function (req, res) {
-  res.status(200).json({message:'Test'});
-});
-
 const { Client } = require('pg');
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+// TODO: temp GET api
+app.get('/api/auth', function (req, res) {
+  const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
 
-client.connect();
+  client.connect();
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
+  client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+    if (err) throw err;
+    var res = undefined;
+    for (let row of res.rows) {
+      res = JSON.stringify(row);
+    }
+    client.end();
+
+    res.status(200).json({message:res});
+  });
 });
 
 app.listen(app.get('port'), function() {
