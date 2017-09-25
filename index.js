@@ -21,8 +21,6 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-const { Client } = require('pg');
-
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
     pg.connect(connString, function(err, client, done) {
