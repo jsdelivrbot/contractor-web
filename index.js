@@ -47,6 +47,10 @@ var MainApp = function() {
       var auth    = require('./routes/authentication');
       //var user    = require('./routes/api/user');
 
+      self.app.get('/', function(request, response) {
+        response.render('index');
+      });
+
     	//self.app.use('/', index);
       //self.app.use('/api/project', project);
       self.app.use('/api/auth', auth);
