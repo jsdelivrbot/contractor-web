@@ -20,10 +20,9 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-console.log('Database URL - ' + process.env.HEROKU_POSTGRESQL_DBNAME_URL);
-
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
+    console.log('Database URL - ' + process.env.HEROKU_POSTGRESQL_DBNAME_URL);
     pg.connect(connString, function(err, client, done) {
   		if(err) response.send("Could not connect to DB: " + err);
 
