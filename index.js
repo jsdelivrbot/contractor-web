@@ -1,4 +1,4 @@
-var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j';
+var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?&ssl=true';
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
@@ -22,7 +22,6 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
-    console.log('Database URL - ' + process.env.HEROKU_POSTGRESQL_DBNAME_URL);
     pg.connect(connString, function(err, client, done) {
   		if(err) response.send("Could not connect to DB: " + err);
 
