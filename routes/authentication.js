@@ -24,6 +24,23 @@ var AuthRouter = function() {
       self.base   = require('./../modules/base.js');
     };
 
+    self.testRouter = function() {
+      var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?&ssl=true';
+      var pg         = require('pg');
+
+      app.get('/api/test', function (req, response) {
+        pg.connect(connString, function(err, client, done) {
+    		    if(err) response.send("Could not connect to DB: " + err);
+
+        		client.query('SELECT * FROM test', function(err, result) {
+        			done();
+        			if(err) return response.send(err);
+        			response.send(result.rows);
+        		});
+    	  });
+      });
+    };
+
     /**
      * Fetch projects router.
      */
@@ -35,7 +52,7 @@ var AuthRouter = function() {
             var code = email;
             if(email && password) {
               console.log("DB URI - " + self.const.DB_CONNECT_URI);
-              
+
               self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
   		            if(err) {
                     response.send("Could not connect to DB: " + err);
@@ -75,6 +92,7 @@ var AuthRouter = function() {
     self.listen = function() {
     	console.log('Listening auth api calls...');
       self.authenticateRouter();
+      self.testRouter();
       //self.generateAccessTokenRouter();
     };
 };
