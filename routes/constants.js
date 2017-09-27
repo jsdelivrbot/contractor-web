@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
     SUCCESS: 'SUCCESS',
     FAILED : 'FAILED',
-    DB_CONNECT_URI: process.env.DATABASE_URL + '&ssl=true',
+    DB_CONNECT_URI: process.env.DATABASE_URL + '?&ssl=true',
     JWT_ACCESS_TOKEN_SECRET: 'supersecret_access_token',
     JWT_REFRESH_TOKEN_SECRET: 'supersecret_refresh_token',
     REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS: 60*60*3, // 3 hours expiry time
