@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
     SUCCESS: 'SUCCESS',
     FAILED : 'FAILED',
-    DB_CONNECT_URI: process.env.DATABASE_URL || 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?&ssl=true',
+    DB_CONNECT_URI: process.env.DATABASE_URL + '&ssl=true',
     JWT_ACCESS_TOKEN_SECRET: 'supersecret_access_token',
     JWT_REFRESH_TOKEN_SECRET: 'supersecret_refresh_token',
     REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS: 60*60*3, // 3 hours expiry time
