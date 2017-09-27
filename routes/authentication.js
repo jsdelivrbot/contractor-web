@@ -27,7 +27,6 @@ var AuthRouter = function() {
     self.testRouter = function() {
       var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
       var pg         = require('pg');
-      
 
       self.router.get('/', function (req, response) {
         console.log("DB URI - " + connString);
