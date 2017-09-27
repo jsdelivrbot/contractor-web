@@ -29,7 +29,7 @@ var AuthRouter = function() {
       var pg         = require('pg');
 
       self.router.get('/', function (req, response) {
-        pg.connect(connString, function(err, client, done) {
+        pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
     		    if(err) response.send("Could not connect to DB: " + err);
 
         		client.query('SELECT * FROM test', function(err, result) {
@@ -46,7 +46,7 @@ var AuthRouter = function() {
      */
     self.authenticateRouter = function() {
         self.router.post('/', function(req, response) {
-            var email = req.body.email;
+            var email    = req.body.email;
             var password = req.body.password;
 
             var code = email;
