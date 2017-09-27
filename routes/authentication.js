@@ -29,6 +29,7 @@ var AuthRouter = function() {
       var pg         = require('pg');
 
       self.router.get('/', function (req, response) {
+        console.log("DB URI - " + self.const.DB_CONNECT_URI);
         pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
     		    if(err) response.send("Could not connect to DB: " + err);
 
