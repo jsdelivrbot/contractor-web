@@ -36,7 +36,10 @@ var AuthRouter = function() {
             if(email && password) {
               console.log("DB URI - " + self.const.DB_CONNECT_URI);
               self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-  		            if(err) response.send("Could not connect to DB: " + err);
+  		            if(err) {
+                    response.send("Could not connect to DB: " + err);
+                    return;
+                  }
 
                   const query = client.query('SELECT firstname FROM test where email = $1',[email]);
                   const results = [];
