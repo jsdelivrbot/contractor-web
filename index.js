@@ -1,4 +1,4 @@
-var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?&ssl=true';
+var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
@@ -23,7 +23,10 @@ app.get('/', function(request, response) {
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
     pg.connect(connString, function(err, client, done) {
-  		if(err) response.send("Could not connect to DB: " + err);
+  		if(err) {
+        response.send("Could not connect to DB: " + err);
+        return;
+      }
 
   		client.query('SELECT * FROM AUTH_USER', function(err, result) {
   			done();
