@@ -1,6 +1,7 @@
 //var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
 //var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?sslmode=require&user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b';
-var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b&ssl=true';
+//var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b&ssl=true';
+var connString = process.env.DATABASE_URL;
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
@@ -8,6 +9,7 @@ var app        = express();
 
 //var router = express.Router();
 
+console.log('DB Connection - ' + connString);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -25,6 +27,24 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
+    var client = new pg.Client(connString);
+
+    client.connect();
+
+    var query = client.query("select * from AUTH_USER");
+
+    const results = [];
+
+    query.on("row", function (row, result) {
+        results.addRow(row);
+    });
+
+    query.on("end", function (result) {
+        client.end();
+        response.send(results.rows);
+    });
+
+    /*
     pg.connect(connString, function(err, client, done) {
   		if(err) {
         response.send("Could not connect to DB: " + err);
@@ -37,6 +57,7 @@ app.get('/api/auth', function (req, response) {
   			response.send(result.rows);
   		});
   	});
+    */
 });
 
 app.listen(app.get('port'), function() {
