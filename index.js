@@ -46,12 +46,12 @@ app.get('/api/auth', function (req, response) {
     const results = [];
 
     query.on("row", function (row, result) {
-        results.addRow(row);
+        results.push(row);
     });
 
     query.on("end", function (result) {
         client.end();
-        response.send(results.rows);
+        response.send(results);
     });
 
     /*
