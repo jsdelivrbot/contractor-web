@@ -6,11 +6,7 @@
 //var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
 //var connString = "postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm";
 
-var connString = {
-    "url": "postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true",
-    "name": "devpostgresql",
-    "connector": "postgresql"
-  }
+var connString = "postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true";
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
