@@ -25,7 +25,7 @@ app.get('/api/auth', function (req, response) {
     pg.connect(connString, function(err, client, done) {
   		if(err) response.send("Could not connect to DB: " + err);
 
-  		client.query('SELECT * FROM test', function(err, result) {
+  		client.query('SELECT * FROM AUTH_USER', function(err, result) {
   			done();
   			if(err) return response.send(err);
   			response.send(result.rows);
