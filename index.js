@@ -15,7 +15,7 @@ var Sequelize  = require("sequelize");
 
 //var router = express.Router();
 
-console.log('DB Connection - ' + connString);
+//console.log('DB Connection - ' + connString);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
