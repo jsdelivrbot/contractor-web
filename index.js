@@ -47,7 +47,6 @@ app.get('/api/auth', function (req, response) {
     });
     */
 
-
     console.log('DB Connection - ' + connString);
 
     var client = new pg.Client(connString);
