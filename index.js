@@ -6,7 +6,7 @@
 //var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
 //var connString = "postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm";
 
-//var connString = "postgres://hnuegxefpebghz:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true";
+var connString = "postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm";
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
@@ -34,6 +34,7 @@ app.get('/', function(request, response) {
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
   // Or you can simply use a connection uri
+    /*
     const sequelize = new Sequelize('postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm');
 
     sequelize
@@ -44,8 +45,9 @@ app.get('/api/auth', function (req, response) {
     .catch(err => {
       console.error('Unable to connect to the database:', err);
     });
+    */
 
-    /*
+
     console.log('DB Connection - ' + connString);
 
     var client = new pg.Client(connString);
@@ -64,7 +66,7 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
-    */
+
 
     /*
     pg.connect(connString, function(err, client, done) {
