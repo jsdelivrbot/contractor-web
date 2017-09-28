@@ -1,7 +1,10 @@
+#!/usr/bin/env node
+
 //var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
 //var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?sslmode=require&user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b';
 //var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b&ssl=true';
-var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
+//var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
+var connString = "pg://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j";
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
@@ -27,38 +30,6 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
-    const { Pool, Client } = require('pg')
-
-    const pool = new Pool({
-      user:     'hnuegxefpebghz',
-      host:     'ec2-54-243-185-123.compute-1.amazonaws.com',
-      database: 'd6itatao1468j',
-      password: '6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b',
-      port: 5432
-    })
-
-    pool.query('SELECT NOW()', (err, res) => {
-      console.log(err, res)
-      pool.end()
-    })
-
-    const client = new Client({
-      user:     'hnuegxefpebghz',
-      host:     'ec2-54-243-185-123.compute-1.amazonaws.com',
-      database: 'd6itatao1468j',
-      password: '6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b',
-      port: 5432
-    });
-
-    client.connect()
-
-    client.query('SELECT NOW()', (err, res) => {
-      console.log(err, res)
-      client.end()
-      response.send(res)
-    });
-
-    /*
     console.log('DB Connection - ' + connString);
 
     var client = new pg.Client(connString);
@@ -77,7 +48,6 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
-    */
 
     /*
     pg.connect(connString, function(err, client, done) {
