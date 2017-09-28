@@ -28,6 +28,8 @@ app.get('/', function(request, response) {
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
 
+    console.log('DB Connection - ' + connString);
+
     var client = new pg.Client(connString);
 
     client.connect();
