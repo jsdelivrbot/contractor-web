@@ -11,6 +11,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
 var app        = express();
+var Sequelize  = require("sequelize");
 
 //var router = express.Router();
 
