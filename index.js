@@ -5,8 +5,9 @@
 //var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b&ssl=true';
 //var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
 
-var connString = "postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j";
+//var connString = "postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j";
 //var connString = "postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm";
+var connString = process.env.DATABASE_URL;
 
 var express    = require('express');
 var bodyParser = require('body-parser');
@@ -34,22 +35,8 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
-  // Or you can simply use a connection uri
-    /*
-    const sequelize = new Sequelize('postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm');
-
-    sequelize
-    .authenticate()
-    .then(() => {
-      console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-      console.error('Unable to connect to the database:', err);
-    });
-    */
-
     console.log('DB Connection - ' + connString);
-    /*
+
     var client = new pg.Client(connString);
 
     client.connect();
@@ -66,9 +53,8 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
-    */
 
-
+    /*
     pg.connect(connString, function(err, client, done) {
   		if(err) {
         response.send("Could not connect to DB: " + err);
@@ -81,6 +67,7 @@ app.get('/api/auth', function (req, response) {
   			response.send(result.rows);
   		});
   	});
+    */
 });
 
 app.listen(app.get('port'), function() {
