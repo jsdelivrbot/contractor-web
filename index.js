@@ -27,7 +27,24 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
+  
+    const client = new Client({
+      user:     'hnuegxefpebghz',
+      host:     'ec2-54-243-185-123.compute-1.amazonaws.com',
+      database: 'd6itatao1468j',
+      password: '6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b',
+      port: 5432,
+    });
 
+    client.connect()
+
+    client.query('SELECT NOW()', (err, res) => {
+      console.log(err, res)
+      client.end()
+      response.send(res)
+    });
+
+    /*
     console.log('DB Connection - ' + connString);
 
     var client = new pg.Client(connString);
@@ -46,6 +63,7 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
+    */
 
     /*
     pg.connect(connString, function(err, client, done) {
