@@ -9,7 +9,6 @@ var app        = express();
 
 //var router = express.Router();
 
-
 console.log('DB Connection - ' + connString);
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +27,7 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
+
     var client = new pg.Client(connString);
 
     client.connect();
