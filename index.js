@@ -32,6 +32,19 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
+  // Or you can simply use a connection uri
+    const sequelize = new Sequelize('postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm');
+
+    sequelize
+    .authenticate()
+    .then(() => {
+      console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+      console.error('Unable to connect to the database:', err);
+    });
+
+    /*
     console.log('DB Connection - ' + connString);
 
     var client = new pg.Client(connString);
@@ -50,6 +63,7 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
+    */
 
     /*
     pg.connect(connString, function(err, client, done) {

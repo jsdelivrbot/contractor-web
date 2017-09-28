@@ -21,7 +21,8 @@
     "jsonwebtoken": "*",
     "promise": "*",
     "q": "*",
-    "md5": "*"
+    "md5": "*",
+    "sequelize":"4.11.3"
   },
   "devDependencies": {
     "request": "^2.81.0",
