@@ -1,4 +1,5 @@
-var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
+//var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
+var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?sslmode=require&user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b';
 var express    = require('express');
 var bodyParser = require('body-parser');
 var pg         = require('pg');
