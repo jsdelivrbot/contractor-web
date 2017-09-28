@@ -48,7 +48,7 @@ app.get('/api/auth', function (req, response) {
     */
 
     console.log('DB Connection - ' + connString);
-
+    /*
     var client = new pg.Client(connString);
 
     client.connect();
@@ -65,9 +65,9 @@ app.get('/api/auth', function (req, response) {
         client.end();
         response.send(results.rows);
     });
+    */
 
 
-    /*
     pg.connect(connString, function(err, client, done) {
   		if(err) {
         response.send("Could not connect to DB: " + err);
@@ -80,7 +80,6 @@ app.get('/api/auth', function (req, response) {
   			response.send(result.rows);
   		});
   	});
-    */
 });
 
 app.listen(app.get('port'), function() {
