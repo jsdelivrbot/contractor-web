@@ -27,13 +27,27 @@ app.get('/', function(request, response) {
 
 // TODO: temp GET api
 app.get('/api/auth', function (req, response) {
-  
+    const { Pool, Client } = require('pg')
+
+    const pool = new Pool({
+      user:     'hnuegxefpebghz',
+      host:     'ec2-54-243-185-123.compute-1.amazonaws.com',
+      database: 'd6itatao1468j',
+      password: '6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b',
+      port: 5432
+    })
+
+    pool.query('SELECT NOW()', (err, res) => {
+      console.log(err, res)
+      pool.end()
+    })
+
     const client = new Client({
       user:     'hnuegxefpebghz',
       host:     'ec2-54-243-185-123.compute-1.amazonaws.com',
       database: 'd6itatao1468j',
       password: '6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b',
-      port: 5432,
+      port: 5432
     });
 
     client.connect()
