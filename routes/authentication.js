@@ -40,8 +40,7 @@ var AuthRouter = function() {
                     return;
                   }
 
-                  //const query = client.query('SELECT firstname FROM test where email = $1',[email]);
-                  const query = client.query('select * from AUTH_USER');
+                  const query = client.query('SELECT id FROM AUTH_USER where email = $1',[email]);
                   const results = [];
 
                   query.on('row', (row) => {
@@ -50,7 +49,11 @@ var AuthRouter = function() {
 
                   query.on('end', () => {
                     done();
-                    return response.status(201).json({status: self.const.SUCCESS, data: results});
+                    var jsonResult = results.length > 0 ?
+                          {status: self.const.SUCCESS, data: results} :
+                            {status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID};
+
+                    return response.status(201).json(jsonResult);
                   });
   	           });
             } else {
