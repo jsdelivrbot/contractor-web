@@ -1,75 +1,87 @@
-#!/usr/bin/env node
+var MainApp = function() {
+    //  Scope.
+    var self = this;
 
-//var connString = 'postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?ssl=true';
-//var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?sslmode=require&user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b';
-//var connString = 'postgres://ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j?user=hnuegxefpebghz&password=6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b&ssl=true';
-//var connString = 'postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm';
+    /**
+     * Initialize libraries
+     */
+    self.initLibs = function() {
+    	self.express      = require('express');
+    	self.bodyParser   = require('body-parser');
+    	self.cookieParser = require('cookie-parser');
+    	self.path         = require('path');
+    	self.fs           = require('fs');
+    };
 
-//var connString = "postgres://hnuegxefpebghz:6f06966334822738d634b26337ea8aba8362d91f4088db2f6e9951ca4a6bdc6b@ec2-54-243-185-123.compute-1.amazonaws.com:5432/d6itatao1468j";
-//var connString = "postgres://hxippjwm:tdzmbJfzaSOePGaIKvJWe_FjM6BcqmNk@elmer.db.elephantsql.com:5432/hxippjwm";
-var connString = process.env.DATABASE_URL;
+    /**
+     *  Initialize the server (express) and create the routes and register
+     *  the handlers.
+     */
+    self.initServer = function() {
+        self.app = self.express();
 
-var express    = require('express');
-var bodyParser = require('body-parser');
-var pg         = require('pg');
-var app        = express();
-var Sequelize  = require("sequelize");
+        //  Add handlers for the app (from the routes).
+        for (var r in self.routes) {
+            self.app.get(r, self.routes[r]);
+        }
 
-//var router = express.Router();
+        self.app.set('views', self.path.join(__dirname, 'views'));
+        self.app.set('view engine', 'ejs');
 
-//console.log('DB Connection - ' + connString);
+        self.app.use(self.express.static(self.path.join(__dirname, 'public')));
+        self.app.use(self.bodyParser.json());
+        self.app.use(self.bodyParser.urlencoded());
+        self.app.use(self.cookieParser());
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
+        self.createRoutes();
+    };
 
-app.set('port', (process.env.PORT || 5000));
+    /**
+     *  Create the routing table entries + handlers for the application.
+     */
+    self.createRoutes = function() {
+    	console.log('Creating routes...');
 
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+    	//var index   = require('./routes/index');
+      //var project = require('./routes/api/project');
+      var auth    = require('./routes/authentication');
+      //var user    = require('./routes/api/user');
 
-app.get('/', function(request, response) {
-  response.render('index');
-});
+      self.app.get('/', function(request, response) {
+        response.render('index');
+      });
 
-// TODO: temp GET api
-app.get('/api/auth', function (req, response) {
-    console.log('DB Connection - ' + connString);
+      //self.app.use('/api/project', project);
+      self.app.use('/api/auth', auth);
+      //self.app.use('/api/user', user);
+    };
 
-    var client = new pg.Client(connString);
+    /**
+     *  Start the server (starts up the sample application).
+     */
+    self.start = function() {
+        self.port = (process.env.PORT || 5000);
 
-    client.connect();
+        self.app.set('port', self.port);
+        //  Start the app on the specific interface (and port).
+        self.app.listen(self.port, function() {
+            console.log('%s: Node server started on %d ...',
+                        Date(Date.now() ), self.port);
+        });
+    };
 
-    var query = client.query("select * from AUTH_USER");
+    /**
+     *  Initializes the sample application.
+     */
+    self.initialize = function() {
+    	self.initLibs();
+      self.initServer();
+    };
+};
 
-    const results = [];
-
-    query.on("row", function (row, result) {
-        results.push(row);
-    });
-
-    query.on("end", function (result) {
-        client.end();
-        response.send(results);
-    });
-
-    /*
-    pg.connect(connString, function(err, client, done) {
-  		if(err) {
-        response.send("Could not connect to DB: " + err);
-        return;
-      }
-
-  		client.query('SELECT * FROM AUTH_USER', function(err, result) {
-  			done();
-  			if(err) return response.send(err);
-  			response.send(result.rows);
-  		});
-  	});
-    */
-});
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+/**
+ *  main():  Main code.
+ */
+var app = new MainApp();
+app.initialize();
+app.start();
