@@ -25,6 +25,40 @@ var AuthRouter = function() {
     };
 
     /**
+     *
+     */
+    self.authenticateUserPromise = function(email, password) {
+      var defer = self.Q.defer();
+
+      self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+          if(err) {
+            //response.send("Could not connect to DB: " + err);
+            defer.reject(new Error( "Could not connect to DB: " + err ));
+            return;
+          }
+
+          const query = client.query('SELECT id FROM AUTH_USER where email = $1 LIMIT 1',[email]);
+          const results = [];
+
+          query.on('row', (row) => {
+            results.push(row);
+          });
+
+          query.on('end', () => {
+            done();
+            var jsonResult = results.length > 0 ?
+                  {status: self.const.SUCCESS, data: results} :
+                    {status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID};
+
+            //return response.status(201).json(jsonResult);
+            defer.resolve(jsonResult);
+          });
+       });
+
+       return defer.promise;
+    }
+
+    /**
      * Fetch projects router.
      */
     self.authenticateRouter = function() {
@@ -32,30 +66,13 @@ var AuthRouter = function() {
             var email    = req.body.email;
             var password = req.body.password;
 
-            var code = email;
             if(email && password) {
-              self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-  		            if(err) {
-                    response.send("Could not connect to DB: " + err);
-                    return;
-                  }
-
-                  const query = client.query('SELECT id FROM AUTH_USER where email = $1',[email]);
-                  const results = [];
-
-                  query.on('row', (row) => {
-                    results.push(row);
+              self.authenticateUserPromise(email, password)
+                  .then(function(data){
+                       response.status(201).json(data);
+                  }, function (error) {
+                       response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
                   });
-
-                  query.on('end', () => {
-                    done();
-                    var jsonResult = results.length > 0 ?
-                          {status: self.const.SUCCESS, data: results} :
-                            {status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID};
-
-                    return response.status(201).json(jsonResult);
-                  });
-  	           });
             } else {
                 response.send({status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
             }
