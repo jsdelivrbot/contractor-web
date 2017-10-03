@@ -58,6 +58,35 @@ var AuthRouter = function() {
        return defer.promise;
     }
 
+    self.generateTokens = function(user) {
+      var defer = self.Q.defer();
+
+      console.log('generateTokens user - ' + user);
+
+      if(user) {
+          var cTimeStamp  = Date.now();
+          var accessToken = self.jwt.sign({username:user.userName + '_' + cTimeStamp},
+                            self.const.JWT_ACCESS_TOKEN_SECRET,
+                            //self.const.JWT_ACCESS_TOKEN_SECRET + '_' + cTimeStamp,
+                            {expiresIn: self.const.ACCESS_TOKEN_EXPIRY_TIME_IN_SEC});
+
+          var refreshToken = self.jwt.sign({username:user.id + '_' + cTimeStamp},
+                             self.const.JWT_REFRESH_TOKEN_SECRET,
+                             //self.const.JWT_REFRESH_TOKEN_SECRET + '_' + cTimeStamp,
+                             {expiresIn: self.const.REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS});
+
+          console.log('generateTokens accessToken - ' + accessToken + ' refreshToken - ' + refreshToken);
+
+          var userToken = {user: user, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
+
+          defer.resolve(userToken);
+      } else {
+          defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+      }
+
+      return defer.promise;
+    }
+
     /**
      * Fetch projects router.
      */
@@ -69,7 +98,10 @@ var AuthRouter = function() {
             if(email && password) {
               self.authenticateUserPromise(email, password)
                   .then(function(data){
-                       response.status(201).json(data);
+                    self.generateTokens(data)
+                        .then(function(token){
+                          response.status(201).json({token:token});
+                        });
                   }, function (error) {
                        response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
                   });
