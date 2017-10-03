@@ -37,7 +37,7 @@ var AuthRouter = function() {
             return;
           }
 
-          const query = client.query('SELECT id FROM AUTH_USER where email = $1 LIMIT 1',[email]);
+          const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 LIMIT 1',[email]);
           const results = [];
 
           query.on('row', (row) => {
@@ -58,26 +58,29 @@ var AuthRouter = function() {
        return defer.promise;
     }
 
-    self.generateTokens = function(user) {
+    /**
+     * Generate token.
+     */
+    self.generateTokens = function(data) {
       var defer = self.Q.defer();
 
-      console.log('generateTokens user - ' + user);
+      console.log('generateTokens user - ' + data);
 
-      if(user) {
+      if(data.status === self.const.SUCCESS) {
           var cTimeStamp  = Date.now();
-          var accessToken = self.jwt.sign({username:user.userName + '_' + cTimeStamp},
+          var accessToken = self.jwt.sign({username:data.user_name + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
                             //self.const.JWT_ACCESS_TOKEN_SECRET + '_' + cTimeStamp,
                             {expiresIn: self.const.ACCESS_TOKEN_EXPIRY_TIME_IN_SEC});
 
-          var refreshToken = self.jwt.sign({username:user.id + '_' + cTimeStamp},
+          var refreshToken = self.jwt.sign({username:data.id + '_' + cTimeStamp},
                              self.const.JWT_REFRESH_TOKEN_SECRET,
                              //self.const.JWT_REFRESH_TOKEN_SECRET + '_' + cTimeStamp,
                              {expiresIn: self.const.REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS});
 
           console.log('generateTokens accessToken - ' + accessToken + ' refreshToken - ' + refreshToken);
 
-          var userToken = {user: user, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
+          var userToken = {user: data.data, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
 
           defer.resolve(userToken);
       } else {
