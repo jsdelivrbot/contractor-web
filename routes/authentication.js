@@ -42,13 +42,13 @@ var AuthRouter = function() {
 
           query.on('row', (row) => {
             console.log('Row data - ' + JSON.stringify(row));
-            results.push(row);
+            results.push(JSON.stringify(row));
           });
 
           query.on('end', () => {
             done();
-            var jsonResult = results.length > 0 ?
-                  {status: self.const.SUCCESS, data: results} :
+            var jsonResult = results.length == 1 ?
+                  {status: self.const.SUCCESS, data: results[0]} :
                     {status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID};
 
             //return response.status(201).json(jsonResult);
@@ -66,6 +66,7 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
+          console.log(JSON.stringify(data.data));
           //console.log('generateTokens user name - <'
           //              + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
           var cTimeStamp  = Date.now();
