@@ -66,15 +66,15 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
-          console.log('generateTokens user name - <'
-                        + data.data.user.user_name + '> and user id - <' + data.data.user.id + '>');
+          //console.log('generateTokens user name - <'
+          //              + data.data.user.user_name + '> and user id - <' + data.data.user.id + '>');
           var cTimeStamp  = Date.now();
-          var accessToken = self.jwt.sign({username:data.data.user.id + '_' + cTimeStamp},
+          var accessToken = self.jwt.sign({username:data.data.id + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
                             //self.const.JWT_ACCESS_TOKEN_SECRET + '_' + cTimeStamp,
                             {expiresIn: self.const.ACCESS_TOKEN_EXPIRY_TIME_IN_SEC});
 
-          var refreshToken = self.jwt.sign({username:data.data.user.id + '_' + cTimeStamp},
+          var refreshToken = self.jwt.sign({username:data.data.id + '_' + cTimeStamp},
                              self.const.JWT_REFRESH_TOKEN_SECRET,
                              //self.const.JWT_REFRESH_TOKEN_SECRET + '_' + cTimeStamp,
                              {expiresIn: self.const.REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS});
