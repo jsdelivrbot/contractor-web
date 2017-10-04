@@ -65,7 +65,7 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
-          console.log(data.data.id);
+          console.log(data.data.id + '-' + data.data.userName);
           //console.log('generateTokens user name - <'
           //              + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
           var cTimeStamp  = Date.now();
