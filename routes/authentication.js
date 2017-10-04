@@ -25,6 +25,26 @@ var AuthRouter = function() {
     };
 
     /**
+     * Validate token by secret.
+     */
+    self.isValidToken = function(token) {
+        var defer = self.Q.defer();
+
+        if(!token) {
+          defer.reject(new Error("Error.Token is null."));
+          return;
+        }
+
+        self.jwt.verify(token, self.const.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
+           if(err === undefined){
+             defer.resolve(true);
+           } else {
+             defer.reject(new Error("Error has occured while processing the token:-" + err));
+           }
+        });
+    };
+
+    /**
      *
      */
     self.authenticateUserPromise = function(email, password) {
@@ -65,16 +85,15 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
-          console.log(data.data.id + '-' + data.data.userName);
-          //console.log('generateTokens user name - <'
-          //              + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
+          var user = data.data;
+          console.log(user.id + '-' + user.userName);
           var cTimeStamp  = Date.now();
-          var accessToken = self.jwt.sign({username:data.data.id + '_' + cTimeStamp},
+          var accessToken = self.jwt.sign({username:user.id + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
                             //self.const.JWT_ACCESS_TOKEN_SECRET + '_' + cTimeStamp,
                             {expiresIn: self.const.ACCESS_TOKEN_EXPIRY_TIME_IN_SEC});
 
-          var refreshToken = self.jwt.sign({username:data.data.id + '_' + cTimeStamp},
+          var refreshToken = self.jwt.sign({username:user.id + '_' + user.userName + '_' + cTimeStamp},
                              self.const.JWT_REFRESH_TOKEN_SECRET,
                              //self.const.JWT_REFRESH_TOKEN_SECRET + '_' + cTimeStamp,
                              {expiresIn: self.const.REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS});
@@ -116,11 +135,28 @@ var AuthRouter = function() {
     };
 
     /**
+     * Logout user
+     */
+    self.logoutRouter = function(){
+      self.router.post('/logout', function(req, response){
+          var token = req.body.token;
+          if(token) {
+            response.status(201)
+                    .json({status: self.const.SUCCESS});
+          } else {
+            response.status(201)
+                    .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
+          }
+      });
+    }
+
+    /**
      * Listen for messages
      */
     self.listen = function() {
     	console.log('Listening auth api calls...');
       self.authenticateRouter();
+      self.logoutRouter();
       //self.generateAccessTokenRouter();
     };
 };
