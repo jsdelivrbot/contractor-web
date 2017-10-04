@@ -64,9 +64,9 @@ var AuthRouter = function() {
     self.generateTokens = function(data) {
       var defer = self.Q.defer();
 
-      console.log('generateTokens user - ' + data);
-
       if(data.status === self.const.SUCCESS) {
+          console.log('generateTokens user name - <'
+                        + data.data.user_name + '> and user id - <' + data.data.id + '>');
           var cTimeStamp  = Date.now();
           var accessToken = self.jwt.sign({username:data.user_name + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
