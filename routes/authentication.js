@@ -39,17 +39,16 @@ var AuthRouter = function() {
 
           const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 LIMIT 1',[email]);
           const results = [];
-
+          var jsonData = {};
           query.on('row', (row) => {
-            console.log('Row data - ' + row.id);
-            results.push(JSON.stringify(row));
+            //console.log('Row data - ' + row.id);
+            //results.push(JSON.stringify(row));
+            jsonData = {id:row.id, userName:row.user_name}
           });
 
           query.on('end', () => {
             done();
-            var jsonResult = results.length == 1 ?
-                  {status: self.const.SUCCESS, data: results[0]} :
-                    {status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID};
+            var jsonResult = {status: self.const.SUCCESS, data: jsonData};
 
             //return response.status(201).json(jsonResult);
             defer.resolve(jsonResult);
@@ -66,7 +65,7 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
-          console.log(JSON.stringify(data.data.id));
+          console.log(data.data.id);
           //console.log('generateTokens user name - <'
           //              + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
           var cTimeStamp  = Date.now();
