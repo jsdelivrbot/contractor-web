@@ -41,7 +41,7 @@ var AuthRouter = function() {
           const results = [];
 
           query.on('row', (row) => {
-            //console.log('Row data - ' + row);
+            console.log('Row data - ' + row.user);
             results.push(row);
           });
 
@@ -66,8 +66,8 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(data.status === self.const.SUCCESS) {
-          console.log('generateTokens user name - <'
-                        + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
+          //console.log('generateTokens user name - <'
+          //              + data.data.user[0].user_name + '> and user id - <' + data.data.user[0].id + '>');
           var cTimeStamp  = Date.now();
           var accessToken = self.jwt.sign({username:data.data.id + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
