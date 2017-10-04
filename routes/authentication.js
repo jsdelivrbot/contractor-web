@@ -41,7 +41,7 @@ var AuthRouter = function() {
           const results = [];
 
           query.on('row', (row) => {
-            console.log('Row data - ' + row);
+            //console.log('Row data - ' + row);
             results.push(row);
           });
 
