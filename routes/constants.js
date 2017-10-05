@@ -10,7 +10,8 @@ module.exports = Object.freeze({
     	LOGIN_INVALID: 10, // User login failed
     	LOGIN_FORM_INVALID: 11, // Login form invalid
     	REFRESH_TOKEN_IS_REQUIRED: 12, // Refresh token is required.
-      DB_SAVE_RECORD_ERROR: 13 // Save record error
+      DB_SAVE_RECORD_ERROR: 13, // Save record error
+      IVALID_TOKEN: 14 // Invalid token
     },
     QUERY: {
         FETCH_USERS: 'SELECT * FROM users'

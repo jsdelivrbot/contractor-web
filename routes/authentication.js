@@ -141,8 +141,16 @@ var AuthRouter = function() {
       self.router.post('/logout', function(req, response){
           var token = req.body.token;
           if(token) {
-            response.status(201)
-                    .json({status: self.const.SUCCESS});
+            self.isValidToken(token)
+                .then(function(successResult){
+                  response.status(201)
+                          .json({status: self.const.SUCCESS});
+                }, function(error){
+                  response.status(201)
+                          .json({status: self.const.FAILED,
+                                 error_code: self.const.ERROR_CODE.IVALID_TOKEN,
+                                 error:error});
+                });
           } else {
             response.status(201)
                     .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
