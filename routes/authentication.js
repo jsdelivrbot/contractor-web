@@ -36,7 +36,7 @@ var AuthRouter = function() {
         }
 
         self.jwt.verify(token, self.const.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
-           if(err === undefined){
+           if(!err){
              defer.resolve(true);
            } else {
              defer.reject(new Error("Error has occured while processing the token:-" + err));
