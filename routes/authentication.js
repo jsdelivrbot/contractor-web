@@ -27,7 +27,7 @@ var AuthRouter = function() {
     /**
      * Validate token by secret.
      */
-    self.isValidToken = function(token) {
+    self.isValidTokenPromise = function(token) {
         var defer = self.Q.defer();
 
         if(!token) {
@@ -42,6 +42,8 @@ var AuthRouter = function() {
              defer.reject(new Error("Error has occured while processing the token:-" + err));
            }
         });
+
+        return defer.promise;
     };
 
     /**
@@ -141,7 +143,7 @@ var AuthRouter = function() {
       self.router.post('/logout', function(req, response){
           var token = req.body.token;
           if(token) {
-            self.isValidToken(token)
+            self.isValidTokenPromise(token)
                 .then(function(successResult){
                   response.status(201)
                           .json({status: self.const.SUCCESS});
