@@ -137,7 +137,7 @@ var AuthRouter = function() {
     };
 
     /**
-     * Logout user
+     * Logout user router.
      */
     self.logoutRouter = function(){
       self.router.post('/logout', function(req, response){
