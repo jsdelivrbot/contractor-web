@@ -119,10 +119,10 @@ var AuthRouter = function() {
         self.router.post('/', function(req, response) {
             var email    = req.body.email;
             var password = req.body.password;
+            response.status(201).json({data:email + ':' + password});
 
             if(email && password) {
-              console.log('authenticateRouter')
-              response.status(201).json({data:'authenticateRouter'});
+              response.status(201).json({data:'authenticateRouter-success'});
               /*
               self.authenticateUserPromise(email, password)
                   .then(function(data){
