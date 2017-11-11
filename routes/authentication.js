@@ -53,6 +53,7 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+          console.log('authenticateUserPromise')
           if(err) {
             //response.send("Could not connect to DB: " + err);
             defer.reject(new Error( "Could not connect to DB: " + err ));
