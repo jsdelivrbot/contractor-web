@@ -119,11 +119,8 @@ var AuthRouter = function() {
         self.router.post('/', function(req, response) {
             var email    = req.body.email;
             var password = req.body.password;
-            response.status(201).json({data:email + ':' + password});
 
-            if(email && password) {
-              response.status(201).json({data:'authenticateRouter-success'});
-              /*
+            if(email && password) {              
               self.authenticateUserPromise(email, password)
                   .then(function(data){
                     self.generateTokens(data)
@@ -133,7 +130,6 @@ var AuthRouter = function() {
                   }, function (error) {
                        response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
                   });
-                  */
             } else {
                 response.send({status: self.const.FAILED, error_code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
             }
