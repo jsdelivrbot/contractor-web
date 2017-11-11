@@ -85,7 +85,7 @@ var AuthRouter = function() {
      */
     self.generateTokens = function(data) {
       var defer = self.Q.defer();
-
+      console.log('generateTokens - data' + data);
       if(data.status === self.const.SUCCESS) {
           var user = data.data;
           console.log(user.id + '-' + user.userName);
