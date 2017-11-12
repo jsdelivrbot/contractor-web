@@ -127,7 +127,7 @@ var AuthRouter = function() {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
-            var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq', $1, $2, $3)";
+            var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq'), $1, $2, $3)";
             client.query( query,
                          [token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
