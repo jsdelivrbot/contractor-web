@@ -176,8 +176,31 @@ var AuthRouter = function() {
      */
     self.isValidTokenInDBPromise = function(token, successResult){
       var defer = self.Q.defer();
-      console.log(token);
-      defer.resolve();
+
+      if(token != undefined){
+        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+            if(err) {
+              defer.reject(new Error( "Could not connect to DB: " + err ));
+              return;
+            }
+
+            var query = "SELECT count(id) FROM user_token WHERE token = $1 AND is_active = 'Y'";
+            client.query( query,
+                         [token],
+                         function(err, result) {
+                           if(err) {
+                             defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+                           } else {
+                             console.log('Result - ' + result);
+                             defer.resolve();
+                           }
+                         }
+                       );
+        });
+      } else {
+        defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+      }
+
       return defer.promise;
     }
 
