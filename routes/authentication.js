@@ -189,10 +189,13 @@ var AuthRouter = function() {
                          [token],
                          function(err, result) {
                            if(err) {
-                             defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+                             defer.reject({error_code:self.const.ERROR_CODE.DB_CONNECTION});
                            } else {
-                             console.log('Result - ' + result.rows.length);
-                             defer.resolve();
+                             if(result.rows.length == 1) {
+                               defer.resolve();
+                             } else {
+                               defer.reject({error_code:self.const.ERROR_CODE.DUPLICATE_DB_DATA});
+                             }
                            }
                          }
                        );
@@ -220,7 +223,7 @@ var AuthRouter = function() {
                       }, function(error){
                         response.status(201)
                                 .json({status: self.const.FAILED,
-                                       error_code: self.const.ERROR_CODE.IVALID_TOKEN,
+                                       error_code: error.error_code,
                                        error:error});
                       });
                 }, function(error){
