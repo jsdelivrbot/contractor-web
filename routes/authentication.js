@@ -131,6 +131,7 @@ var AuthRouter = function() {
             client.query( query,
                          [token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
+                            console.log('Error' + err);
                             if (err) {
                               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
                             } else {
