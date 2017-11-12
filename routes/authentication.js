@@ -60,7 +60,7 @@ var AuthRouter = function() {
             defer.reject(new Error( "Could not connect to DB: " + err ));
             return;
           }
-          console.log(email + '-' + password);
+
           const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
           const results = [];
           var jsonData = {};
@@ -72,13 +72,10 @@ var AuthRouter = function() {
 
           query.on('end', () => {
             done();
-            console.log('json length - ' + self._.size(jsonData))
-            console.log('json - ' + jsonData)
             if(self._.size(jsonData) == 0) {
               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
             } else {
               var jsonResult = {status: self.const.SUCCESS, data: jsonData};
-              //return response.status(201).json(jsonResult);
               defer.resolve(jsonResult);
             }
           });
@@ -92,7 +89,7 @@ var AuthRouter = function() {
      */
     self.generateTokens = function(data) {
       var defer = self.Q.defer();
-      console.log('generateTokens - data' + data);
+
       if(data.status === self.const.SUCCESS) {
           var user = data.data;
           console.log(user.id + '-' + user.userName);
@@ -120,6 +117,20 @@ var AuthRouter = function() {
     }
 
     /**
+     * Save generated token into user_token table
+     */
+    self.saveGeneratedTokens = function(token) {
+      var defer = self.Q.defer();
+      if(token.status == self.const.SUCCESS){
+        defer.resolve(token);
+        console.log('saveGeneratedTokens');
+      } else {
+        defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+      }
+      return defer.promise;
+    }
+
+    /**
      * Fetch projects router.
      */
     self.authenticateRouter = function() {
@@ -132,7 +143,10 @@ var AuthRouter = function() {
                   .then(function(data){
                     self.generateTokens(data)
                         .then(function(token){
-                          response.status(201).json({token:token});
+                          self.saveGeneratedTokens(token)
+                              .then(token){
+                                response.status(201).json({token:token});
+                              }
                         });
                   }, function (error) {
                        response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
