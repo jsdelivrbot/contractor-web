@@ -123,9 +123,10 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
       if(token.status == self.const.SUCCESS){
         defer.resolve(token);
-        console.log('saveGeneratedTokens');
+        console.log('saveGeneratedTokens success');
       } else {
         defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+        console.log('saveGeneratedTokens fail');
       }
       return defer.promise;
     }
@@ -146,6 +147,8 @@ var AuthRouter = function() {
                           self.saveGeneratedTokens(token)
                               .then(function(token){
                                 response.status(201).json({token:token});
+                              }, function (error) {
+                                   response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
                               });
                         });
                   }, function (error) {
