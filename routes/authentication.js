@@ -73,6 +73,7 @@ var AuthRouter = function() {
           query.on('end', () => {
             done();
             console.log('json length - ' + jsonData.length)
+            console.log('json - ' + jsonData)
             if(jsonData.length == undefined) {
               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
             } else {
