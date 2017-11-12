@@ -37,10 +37,8 @@ var AuthRouter = function() {
 
         self.jwt.verify(token, self.const.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
            if(!err){
-             console.log('Token is valid: - ' + token);
              defer.resolve(true);
            } else {
-             console.log('Token is not valid: - ' + token);
              defer.reject(new Error("Error has occured while processing the token:-" + err));
            }
         });
@@ -131,7 +129,6 @@ var AuthRouter = function() {
             client.query( query,
                          [token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
-                            console.log('Error' + err);
                             if (err) {
                               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
                             } else {
@@ -175,6 +172,16 @@ var AuthRouter = function() {
     };
 
     /**
+     * Is valid token in DB
+     */
+    self.isValidTokenInDBPromise = function(token, successResult){
+      var defer = self.Q.defer();
+      console.log(token);
+      defer.resolve();
+      return defer.promise;
+    }
+
+    /**
      * Logout user router.
      */
     self.logoutRouter = function(){
@@ -183,8 +190,16 @@ var AuthRouter = function() {
           if(token) {
             self.isValidTokenPromise(token)
                 .then(function(successResult){
-                  response.status(201)
-                          .json({status: self.const.SUCCESS});
+                  self.isValidTokenInDBPromise(token, successResult)
+                      .then(function(){
+                        response.status(201)
+                                .json({status: self.const.SUCCESS});
+                      }, function(error){
+                        response.status(201)
+                                .json({status: self.const.FAILED,
+                                       error_code: self.const.ERROR_CODE.IVALID_TOKEN,
+                                       error:error});
+                      }););
                 }, function(error){
                   response.status(201)
                           .json({status: self.const.FAILED,
