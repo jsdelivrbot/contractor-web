@@ -60,7 +60,7 @@ var AuthRouter = function() {
             defer.reject(new Error( "Could not connect to DB: " + err ));
             return;
           }
-          
+
           const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
           const results = [];
           var jsonData = {};
@@ -72,6 +72,7 @@ var AuthRouter = function() {
 
           query.on('end', () => {
             done();
+            console.log('json length - ' + jsonData.length)
             var jsonResult = {status: self.const.SUCCESS, data: jsonData};
 
             //return response.status(201).json(jsonResult);
