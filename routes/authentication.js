@@ -121,7 +121,7 @@ var AuthRouter = function() {
      */
     self.saveGeneratedTokens = function(token) {
       var defer = self.Q.defer();
-      if(token.status == self.const.SUCCESS){
+      if(token.user != undefined){
         defer.resolve(token);
         console.log('saveGeneratedTokens success');
       } else {
