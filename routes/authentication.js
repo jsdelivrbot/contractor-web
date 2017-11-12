@@ -37,8 +37,10 @@ var AuthRouter = function() {
 
         self.jwt.verify(token, self.const.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
            if(!err){
+             console.log('Token is valid: - ' + token);
              defer.resolve(true);
            } else {
+             console.log('Token is not valid: - ' + token);
              defer.reject(new Error("Error has occured while processing the token:-" + err));
            }
         });
@@ -120,7 +122,7 @@ var AuthRouter = function() {
             var email    = req.body.email;
             var password = req.body.password;
 
-            if(email && password) {              
+            if(email && password) {
               self.authenticateUserPromise(email, password)
                   .then(function(data){
                     self.generateTokens(data)
