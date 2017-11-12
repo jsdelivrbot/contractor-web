@@ -193,8 +193,10 @@ var AuthRouter = function() {
                            } else {
                              if(result.rows.length == 1) {
                                defer.resolve();
-                             } else {
+                             } else if (result.rows.length > 1) {
                                defer.reject({error_code:self.const.ERROR_CODE.DUPLICATE_DB_DATA});
+                             } else if (result.rows.length == 0) {
+                               defer.reject({error_code:self.const.ERROR_CODE.NO_RECORDS});
                              }
                            }
                          }

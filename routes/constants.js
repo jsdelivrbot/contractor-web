@@ -13,7 +13,8 @@ module.exports = Object.freeze({
       DB_SAVE_RECORD_ERROR: 13, // Save record error
       IVALID_TOKEN: 14, // Invalid token
       DUPLICATE_DB_DATA: 15, // Duplicate DB data
-      DB_CONNECTION: 16 // Invalid DB connection
+      DB_CONNECTION: 16, // Invalid DB connection
+      NO_RECORDS: 17 // No records found
     },
     QUERY: {
         FETCH_USERS: 'SELECT * FROM users'
