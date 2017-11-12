@@ -209,6 +209,15 @@ var AuthRouter = function() {
       return defer.promise;
     }
 
+    /*
+     * Invalidate token in DB.
+     */
+    self.invalidateTokenInDBPromise = function(token){
+      var defer = self.Q.defer();
+      defer.resolve();
+      return defer.promise;
+    }
+
     /**
      * Logout user router.
      */
@@ -220,8 +229,16 @@ var AuthRouter = function() {
                 .then(function(successResult){
                   self.isValidTokenInDBPromise(token, successResult)
                       .then(function(){
-                        response.status(201)
-                                .json({status: self.const.SUCCESS});
+                        self.invalidateTokenInDBPromise(token)
+                            .then(function(){
+                              response.status(201)
+                                      .json({status: self.const.SUCCESS});
+                            }, function(error){
+                              response.status(201)
+                                      .json({status: self.const.FAILED,
+                                             error_code: error.error_code,
+                                             error:error});
+                            });
                       }, function(error){
                         response.status(201)
                                 .json({status: self.const.FAILED,
