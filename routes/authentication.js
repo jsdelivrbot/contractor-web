@@ -61,7 +61,7 @@ var AuthRouter = function() {
             return;
           }
 
-          const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 LIMIT 1',[email]);
+          const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
           const results = [];
           var jsonData = {};
           query.on('row', (row) => {
