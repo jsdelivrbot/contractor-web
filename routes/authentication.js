@@ -191,7 +191,7 @@ var AuthRouter = function() {
                            if(err) {
                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
                            } else {
-                             console.log('Result - ' + result);
+                             console.log('Result - ' + result.rows);
                              defer.resolve();
                            }
                          }
