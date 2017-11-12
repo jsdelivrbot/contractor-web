@@ -122,11 +122,24 @@ var AuthRouter = function() {
     self.saveGeneratedTokens = function(token) {
       var defer = self.Q.defer();
       if(token.user != undefined){
-        defer.resolve(token);
-        console.log('saveGeneratedTokens success');
+        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+            if(err) {
+              defer.reject(new Error( "Could not connect to DB: " + err ));
+              return;
+            }
+            var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq', $1, $2, $3)";
+            client.query( query,
+                         [token.user.id, token.accessToken, 'Y'],
+                         function(err, result) {
+                            if (err) {
+                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+                            } else {
+                              defer.resolve(token);
+                            }
+                         });
+        });
       } else {
         defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-        console.log('saveGeneratedTokens fail');
       }
       return defer.promise;
     }
