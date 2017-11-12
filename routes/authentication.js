@@ -144,9 +144,9 @@ var AuthRouter = function() {
                     self.generateTokens(data)
                         .then(function(token){
                           self.saveGeneratedTokens(token)
-                              .then(token){
+                              .then(function(token){
                                 response.status(201).json({token:token});
-                              }
+                              });
                         });
                   }, function (error) {
                        response.status(201).json({status: self.const.FAILED, code: self.const.ERROR_CODE.LOGIN_FORM_INVALID});
