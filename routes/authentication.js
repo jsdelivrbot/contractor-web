@@ -73,10 +73,13 @@ var AuthRouter = function() {
           query.on('end', () => {
             done();
             console.log('json length - ' + jsonData.length)
-            var jsonResult = {status: self.const.SUCCESS, data: jsonData};
-
-            //return response.status(201).json(jsonResult);
-            defer.resolve(jsonResult);
+            if(jsonData.length == undefined) {
+              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+            } esle {
+              var jsonResult = {status: self.const.SUCCESS, data: jsonData};
+              //return response.status(201).json(jsonResult);
+              defer.resolve(jsonResult);
+            }
           });
        });
 
