@@ -184,14 +184,14 @@ var AuthRouter = function() {
               return;
             }
 
-            var query = "SELECT count(id) FROM user_token WHERE token = $1 AND is_active = 'Y'";
+            var query = "SELECT id FROM user_token WHERE token = $1 AND is_active = 'Y'";
             client.query( query,
                          [token],
                          function(err, result) {
                            if(err) {
                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
                            } else {
-                             console.log('Result - ' + result.rows);
+                             console.log('Result - ' + result.rows.length);
                              defer.resolve();
                            }
                          }
