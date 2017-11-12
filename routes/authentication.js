@@ -75,7 +75,7 @@ var AuthRouter = function() {
             console.log('json length - ' + jsonData.length)
             if(jsonData.length == undefined) {
               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-            } esle {
+            } else {
               var jsonResult = {status: self.const.SUCCESS, data: jsonData};
               //return response.status(201).json(jsonResult);
               defer.resolve(jsonResult);
