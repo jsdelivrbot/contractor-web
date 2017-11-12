@@ -199,7 +199,7 @@ var AuthRouter = function() {
                                 .json({status: self.const.FAILED,
                                        error_code: self.const.ERROR_CODE.IVALID_TOKEN,
                                        error:error});
-                      }););
+                      });
                 }, function(error){
                   response.status(201)
                           .json({status: self.const.FAILED,
