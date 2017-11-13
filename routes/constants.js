@@ -17,7 +17,7 @@ module.exports = Object.freeze({
       NO_RECORDS: 17 // No records found
     },
     QUERY: {
-        FETCH_USERS: 'SELECT * FROM users'
+        FETCH_USERS: 'SELECT * FROM users',
         AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = "N" WHERE token = $1'
     }
 });
