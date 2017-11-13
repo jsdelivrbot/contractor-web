@@ -18,6 +18,7 @@ module.exports = Object.freeze({
     },
     QUERY: {
         FETCH_USERS: 'SELECT * FROM users',
-        AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = $1 WHERE token = $2'
+        AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = $1 WHERE token = $2',
+        NEW_USER_TOKEN: 'INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval($1), $2, $3, $4)'
     }
 });

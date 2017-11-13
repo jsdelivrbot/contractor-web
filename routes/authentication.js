@@ -125,9 +125,9 @@ var AuthRouter = function() {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
-            var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq'), $1, $2, $3)";
-            client.query( query,
-                         [token.user.id, token.accessToken, 'Y'],
+            //var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq'), $1, $2, $3)";
+            client.query( self.const.QUERY.NEW_USER_TOKEN,
+                         ['user_token_seq', token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
                             if (err) {
                               defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
@@ -222,10 +222,6 @@ var AuthRouter = function() {
               return;
             }
 
-            //var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
-            //console.log(self.const.QUERY.AUTH_UPDATE_USER_TOKEN);
-            //client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
-            
             client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
                          ['N', token],
                          function(err, result) {
