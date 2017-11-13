@@ -22,7 +22,7 @@ module.exports = (function() {
            if(!err){
              defer.resolve(true);
            } else {
-             defer.reject(new Error("Error has occured while processing the token:-" + err));
+             defer.reject(new Error("Token is expired/invalid: - " + err));
            }
         });
 

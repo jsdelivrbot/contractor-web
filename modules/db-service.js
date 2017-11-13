@@ -11,6 +11,7 @@ module.exports = (function() {
         var TimerJob = require('timer-jobs');
         var pgDb     = require('pg');
         var _        = require("underscore");
+        var token    = require('./token.js');
 
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
@@ -25,7 +26,13 @@ module.exports = (function() {
                                _.each(result.rows, function(row){
                                  var id    = row.id;
                                  var token = row.token;
-                                 //console.log(row.id);
+                                 
+                                 token.isValidToken(token)
+                                      .then(function(){
+                                        // DO NOTHING
+                                      }, function(error){
+                                        console.log('Token is expired. Deleting this token - ' + token);
+                                      });
                                });
                              });
             });

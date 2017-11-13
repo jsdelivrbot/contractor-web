@@ -30,25 +30,6 @@ var AuthRouter = function() {
      */
     self.isValidTokenPromise = function(token) {
         return self.token.isValidToken(token);
-        
-        /*
-        var defer = self.Q.defer();
-
-        if(!token) {
-          defer.reject(new Error("Error.Token is null."));
-          return;
-        }
-
-        self.jwt.verify(token, self.const.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
-           if(!err){
-             defer.resolve(true);
-           } else {
-             defer.reject(new Error("Error has occured while processing the token:-" + err));
-           }
-        });
-
-        return defer.promise;
-        */
     };
 
     /**
