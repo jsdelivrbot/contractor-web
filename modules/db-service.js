@@ -21,7 +21,7 @@ module.exports = (function() {
                   return;
                 }
 
-                client.query( appConst.QUERY.FIND_USER_TOKEN, ['Y'],
+                client.query( appConst.QUERY.FIND_USER_TOKEN, ['N'],
                              function(err, result) {
                                _.each(result.rows, function(row){
                                  var id    = row.id;
