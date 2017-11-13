@@ -10,6 +10,7 @@ module.exports = (function() {
         var appConst = require('./../routes/constants.js');
         var TimerJob = require('timer-jobs');
         var _        = require("underscore");
+        var pgDb     = require('pg');
         var tokenModule = require('./token.js');
 
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
