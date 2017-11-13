@@ -6,9 +6,6 @@ module.exports = Object.freeze({
     JWT_REFRESH_TOKEN_SECRET: 'supersecret_refresh_token',
     REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS: 60*60*3, // 3 hours expiry time
     ACCESS_TOKEN_EXPIRY_TIME_IN_SEC: 300, // 5 min expiry time
-    QUERY: {
-      AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = N WHERE token = $1',
-    },
     ERROR_CODE: {
     	LOGIN_INVALID: 10, // User login failed
     	LOGIN_FORM_INVALID: 11, // Login form invalid
@@ -21,5 +18,6 @@ module.exports = Object.freeze({
     },
     QUERY: {
         FETCH_USERS: 'SELECT * FROM users'
+        AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = "N" WHERE token = $1',
     }
 });
