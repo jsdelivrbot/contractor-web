@@ -18,6 +18,6 @@ module.exports = Object.freeze({
     },
     QUERY: {
         FETCH_USERS: 'SELECT * FROM users',
-        AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = "N" WHERE token = $1'
+        AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = N WHERE token = $1'
     }
 });
