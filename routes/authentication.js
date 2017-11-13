@@ -222,11 +222,12 @@ var AuthRouter = function() {
               return;
             }
 
-            var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
-            console.log(self.const.QUERY.AUTH_UPDATE_USER_TOKEN);
+            //var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
+            //console.log(self.const.QUERY.AUTH_UPDATE_USER_TOKEN);
             //client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
-            client.query( query,
-                         [token],
+            
+            client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
+                         ['N', token],
                          function(err, result) {
                            if(err) {
                              defer.reject({error_code:self.const.ERROR_CODE.DB_CONNECTION});
