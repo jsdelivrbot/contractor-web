@@ -25,7 +25,7 @@ module.exports = (function() {
                                  console.log(row.id);
                                });
                              });
-            }
+            });
           });
 
         dbCleanUpTimer.start();
