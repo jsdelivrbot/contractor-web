@@ -222,8 +222,10 @@ var AuthRouter = function() {
               return;
             }
 
-            //var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
-            client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
+            var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
+            console.log(self.const.QUERY.AUTH_UPDATE_USER_TOKEN);
+            //client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
+            client.query( query,
                          [token],
                          function(err, result) {
                            if(err) {
