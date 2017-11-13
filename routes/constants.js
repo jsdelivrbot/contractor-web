@@ -7,7 +7,7 @@ module.exports = Object.freeze({
     REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS: 60*60*3, // 3 hours expiry time
     ACCESS_TOKEN_EXPIRY_TIME_IN_SEC: 300, // 5 min expiry time
     TIMER:{
-      DB_CLEAN_UP: 50000
+      DB_CLEAN_UP: 25000
     },
     ERROR_CODE: {
     	LOGIN_INVALID: 10, // User login failed

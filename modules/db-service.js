@@ -9,7 +9,7 @@ module.exports = (function() {
         var appConst = require('./../routes/constants.js');
         var TimerJob = require('timer-jobs');
         var pgDb     = require('pg');
-        var _        = require("underscore");
+        var self._        = require("underscore");
 
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
@@ -19,7 +19,7 @@ module.exports = (function() {
                   return;
                 }
 
-                client.query( self.const.QUERY.FIND_USER_TOKEN, [],
+                client.query( appConst.QUERY.FIND_USER_TOKEN, [],
                              function(err, result) {
                                self._.each(result.rows, function(row){
                                  console.log(row.id);
