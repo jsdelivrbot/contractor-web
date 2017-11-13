@@ -222,8 +222,8 @@ var AuthRouter = function() {
               return;
             }
 
-            var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
-            client.query( query,
+            //var query = "UPDATE user_token SET is_active = 'N' WHERE token = $1";
+            client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
                          [token],
                          function(err, result) {
                            if(err) {
@@ -239,7 +239,7 @@ var AuthRouter = function() {
 
       return defer.promise;
     }
-    
+
 
     /**
      * Logout user router.
