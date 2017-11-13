@@ -239,6 +239,7 @@ var AuthRouter = function() {
 
       return defer.promise;
     }
+    
 
     /**
      * Logout user router.
