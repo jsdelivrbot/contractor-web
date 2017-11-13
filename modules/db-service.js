@@ -6,7 +6,7 @@ module.exports = (function() {
      *
      */
     var startJobTokenCleanUp = function() {
-        var appConst = require('./constants.js');
+        var appConst = require('./../routes/constants.js');
         var TimerJob = require('timer-jobs');
         var pgDb     = require('pg');
         var _        = require("underscore");
