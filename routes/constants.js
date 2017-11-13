@@ -7,7 +7,7 @@ module.exports = Object.freeze({
     REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS: 60*60*3, // 3 hours expiry time
     ACCESS_TOKEN_EXPIRY_TIME_IN_SEC: 300, // 5 min expiry time
     QUERY: {
-      AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = "N" WHERE token = $1',
+      AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = N WHERE token = $1',
     },
     ERROR_CODE: {
     	LOGIN_INVALID: 10, // User login failed
