@@ -71,11 +71,20 @@ var MainApp = function() {
     };
 
     /**
+     * Services
+     */
+    self.initServices = function() {
+      self.dbService  = require('./modules/db-service.js');
+      self.dbService.startJobTokenCleanUp();
+    }
+
+    /**
      *  Initializes the sample application.
      */
     self.initialize = function() {
     	self.initLibs();
       self.initServer();
+      self.initServices();
     };
 };
 
