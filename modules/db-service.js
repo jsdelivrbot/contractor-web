@@ -20,10 +20,12 @@ module.exports = (function() {
                   return;
                 }
 
-                client.query( appConst.QUERY.FIND_USER_TOKEN, [],
+                client.query( appConst.QUERY.FIND_USER_TOKEN, ['Y'],
                              function(err, result) {
                                _.each(result.rows, function(row){
-                                 console.log(row.id);
+                                 var id    = row.id;
+                                 var token = row.token;
+                                 //console.log(row.id);
                                });
                              });
             });

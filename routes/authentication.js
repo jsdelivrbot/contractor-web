@@ -22,12 +22,16 @@ var AuthRouter = function() {
       self._      = require("underscore");
       self.Q      = require('q');
       self.base   = require('./../modules/base.js');
+      self.token  = require('./../modules/token.js');
     };
 
     /**
      * Validate token by secret.
      */
     self.isValidTokenPromise = function(token) {
+        return self.token.isValidToken(token);
+        
+        /*
         var defer = self.Q.defer();
 
         if(!token) {
@@ -44,6 +48,7 @@ var AuthRouter = function() {
         });
 
         return defer.promise;
+        */
     };
 
     /**
