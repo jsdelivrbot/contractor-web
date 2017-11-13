@@ -39,7 +39,7 @@ module.exports = (function() {
           });
 
         dbCleanUpTimer.start();
-    },
+    }
 
     var deleteUserTokenRecord = function(userTokenID) {
       var appConst = require('./../routes/constants.js');
