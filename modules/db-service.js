@@ -9,7 +9,6 @@ module.exports = (function() {
     var startJobTokenCleanUp = function() {
         var appConst = require('./../routes/constants.js');
         var TimerJob = require('timer-jobs');
-        var pgDb     = require('pg');
         var _        = require("underscore");
         var tokenModule = require('./token.js');
 
@@ -31,7 +30,8 @@ module.exports = (function() {
                                       .then(function(){
                                         // DO NOTHING
                                       }, function(error){
-                                        console.log('Token is expired. Deleting this token - ' + token);
+                                        console.log('Token is expired. Deleting this token with ID:' + id + ' - token:' + token);
+                                        deleteUserTokenRecord(id);
                                       });
                                });
                              });
@@ -39,6 +39,27 @@ module.exports = (function() {
           });
 
         dbCleanUpTimer.start();
+    },
+
+    var deleteUserTokenRecord = function(userTokenID) {
+      var appConst = require('./../routes/constants.js');
+      var pgDb     = require('pg');
+
+      pgDb.connect(appConst.DB_CONNECT_URI, function(err, client, done) {
+          if(err) {
+            return;
+          }
+
+          client.query( appConst.QUERY.DELETE_USER_TOKEN,
+                       [userTokenID],
+                       function(err, result) {
+                         if(err) {
+                           console.log('Error has occured while deleting user token with ID:' + userTokenID);
+                         } else {
+                           console.log('User Token with ID:' + userTokenID + ' has been deleted successfully!');
+                         }
+                       });
+      });
     }
 
     return {
