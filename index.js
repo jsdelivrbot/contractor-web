@@ -43,7 +43,7 @@ var MainApp = function() {
     	console.log('Creating routes...');
 
     	//var index   = require('./routes/index');
-      //var project = require('./routes/api/project');
+      var project = require('./routes/project');
       var auth    = require('./routes/authentication');
       //var user    = require('./routes/api/user');
 
@@ -51,7 +51,7 @@ var MainApp = function() {
         response.render('index');
       });
 
-      //self.app.use('/api/project', project);
+      self.app.use('/api/project', project);
       self.app.use('/api/auth', auth);
       //self.app.use('/api/user', user);
     };
