@@ -30,6 +30,8 @@ var ProjectRouter = function() {
      */
     self.fetchProjectRouter = function() {
       self.router.get('/', function(req, response) {
+        var projects = {};
+        response.status(201).json({data:projects});
       });
     };
 
