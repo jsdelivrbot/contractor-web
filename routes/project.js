@@ -63,7 +63,7 @@ var ProjectRouter = function() {
      * Listen for messages
      */
     self.listen = function() {
-    	console.log('Listening project project calls...');
+    	console.log('Listening project api calls...');
 
       self.fetchProjectRouter();
       self.createProjectRouter();

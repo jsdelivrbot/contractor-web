@@ -129,10 +129,10 @@ var AuthRouter = function() {
     }
 
     /**
-     * Fetch projects router.
+     * Login router.
      */
-    self.authenticateRouter = function() {
-        self.router.post('/', function(req, response) {
+    self.loginRouter = function() {
+        self.router.post('/login', function(req, response) {
             var email    = req.body.email;
             var password = req.body.password;
 
@@ -271,7 +271,7 @@ var AuthRouter = function() {
      */
     self.listen = function() {
     	console.log('Listening auth api calls...');
-      self.authenticateRouter();
+      self.loginRouter();
       self.logoutRouter();
       //self.generateAccessTokenRouter();
     };
