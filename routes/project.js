@@ -26,12 +26,38 @@ var ProjectRouter = function() {
     };
 
     /**
+     * Fetch projects per token.
+     */
+    self.fetchProjects = function(token){
+        var defer = self.Q.defer();
+        var projects = {}; // TODO: complete it.
+        defer.resolve(projects);
+        return defer.promise;
+    }
+
+    /**
      * Search projects.
      */
     self.fetchProjectRouter = function() {
       self.router.get('/', function(req, response) {
-        var projects = {};
-        response.status(201).json({data:projects});
+        var token = req.body.token;
+        if(token) {
+          self.token.isValidToken(token)
+              .then(function(successResult){
+                self.fetchProjects(token)
+                    .then(function(projects){
+                        response.status(201).json({data:projects});
+                    });
+              }, function(error){
+                response.status(201)
+                        .json({status: self.const.FAILED,
+                               error_code: error.error_code,
+                               error:error});
+              });
+        } else {
+          response.status(201)
+                  .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
+        }
       });
     };
 
