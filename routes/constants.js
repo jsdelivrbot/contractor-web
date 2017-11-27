@@ -24,6 +24,7 @@ module.exports = Object.freeze({
         AUTH_UPDATE_USER_TOKEN: 'UPDATE user_token SET is_active = $1 WHERE token = $2',
         NEW_USER_TOKEN: 'INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval($1), $2, $3, $4)',
         FIND_USER_TOKEN: 'SELECT id, token FROM user_token WHERE is_active = $1',
-        DELETE_USER_TOKEN: 'DELETE FROM user_token WHERE ID = $1'
+        DELETE_USER_TOKEN: 'DELETE FROM user_token WHERE ID = $1',
+        FETCH_PROJECTS: 'SELECT ID, NAME from PROJECTS'
     }
 });

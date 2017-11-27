@@ -30,8 +30,21 @@ var ProjectRouter = function() {
      */
     self.fetchProjects = function(token){
         var defer = self.Q.defer();
-        var projects = {}; // TODO: complete it.
-        defer.resolve(projects);
+        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+            if(err) {
+              defer.reject(new Error( "Could not connect to DB: " + err ));
+              return;
+            }
+
+            client.query( self.const.QUERY.FETCH_PROJECTS, [''],
+                         function(err, result) {
+                            if (err) {
+                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
+                            } else {
+                              defer.resolve(result);
+                            }
+            });
+        });
         return defer.promise;
     }
 
