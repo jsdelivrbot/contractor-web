@@ -53,8 +53,7 @@ var ProjectRouter = function() {
      */
     self.fetchProjectRouter = function() {
       self.router.get('/', function(req, response) {
-        var token = req.token;
-        console.log("Request - " + req);
+        var token = req.query.token;        
         console.log("Token - " + token);
         if(token) {
           self.token.isValidToken(token)
