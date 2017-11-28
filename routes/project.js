@@ -54,6 +54,8 @@ var ProjectRouter = function() {
     self.fetchProjectRouter = function() {
       self.router.get('/', function(req, response) {
         var token = req.token;
+        console.log("Request - " + req);
+        console.log("Token - " + token);
         if(token) {
           self.token.isValidToken(token)
               .then(function(successResult){
@@ -69,7 +71,8 @@ var ProjectRouter = function() {
               });
         } else {
           response.status(201)
-                  .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
+                  .json({status: self.const.FAILED,
+                         error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
         }
       });
     };
