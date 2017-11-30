@@ -35,7 +35,7 @@ var ProjectRouter = function() {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
-
+            console.log("Fetching projects");
             client.query( self.const.QUERY.FETCH_PROJECTS, [''],
                          function(err, result) {
                             if (err) {
@@ -53,7 +53,7 @@ var ProjectRouter = function() {
      */
     self.fetchProjectRouter = function() {
       self.router.get('/', function(req, response) {
-        var token = req.query.token;        
+        var token = req.query.token;
         console.log("Token - " + token);
         if(token) {
           self.token.isValidToken(token)
