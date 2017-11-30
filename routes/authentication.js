@@ -170,6 +170,8 @@ var AuthRouter = function() {
               return;
             }
 
+            console.log("Calling isValidTokenInDBPromise");
+
             var query = "SELECT id FROM user_token WHERE token = $1 AND is_active = 'Y'";
             client.query( query,
                          [token],
@@ -181,7 +183,7 @@ var AuthRouter = function() {
                                defer.resolve();
                              } else if (result.rows.length > 1) {
                                defer.reject({error_code:self.const.ERROR_CODE.DUPLICATE_DB_DATA});
-                             } else if (result.rows.length == 0) {
+                             } else  {
                                defer.reject({error_code:self.const.ERROR_CODE.NO_RECORDS});
                              }
                            }
@@ -233,6 +235,7 @@ var AuthRouter = function() {
       self.router.post('/logout', function(req, response){
           var token = req.body.token;
           if(token) {
+            console.log("Calling logoutRouter...");
             self.isValidTokenPromise(token)
                 .then(function(successResult){
                   self.isValidTokenInDBPromise(token, successResult)
