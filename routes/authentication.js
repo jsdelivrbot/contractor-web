@@ -111,7 +111,7 @@ var AuthRouter = function() {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
-            //var query = "INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval('user_token_seq'), $1, $2, $3)";
+
             client.query( self.const.QUERY.NEW_USER_TOKEN,
                          ['user_token_seq', token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
@@ -163,7 +163,7 @@ var AuthRouter = function() {
     self.isValidTokenInDBPromise = function(token, successResult){
       var defer = self.Q.defer();
 
-      if(token != undefined){
+      if(token){
         self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
               defer.reject(new Error( "Could not connect to DB: " + err ));
@@ -171,10 +171,8 @@ var AuthRouter = function() {
             }
 
             console.log("Calling isValidTokenInDBPromise");
-
-            var query = "SELECT id FROM user_token WHERE token = $1 AND is_active = 'Y'";
-            client.query( query,
-                         [token],
+            client.query( self.const.QUERY.CHECK_USER_TOKEN,
+                         [token, 'Y'],
                          function(err, result) {
                            if(err) {
                              defer.reject({error_code:self.const.ERROR_CODE.DB_CONNECTION});
