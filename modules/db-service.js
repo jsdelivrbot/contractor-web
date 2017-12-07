@@ -4,7 +4,7 @@ module.exports = (function() {
     var self = this;
 
     /**
-     *
+     * Token clean up job.
      */
     var startJobTokenCleanUp = function() {
         var appConst = require('./../routes/constants.js');
