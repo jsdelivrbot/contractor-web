@@ -1,7 +1,7 @@
 #!/bin/env node
 
 /**
- *  Define the project router.
+ *  Define the project router class.
  */
 var ProjectRouter = function() {
     var self = this;
