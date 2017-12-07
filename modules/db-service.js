@@ -2,7 +2,6 @@
 
 module.exports = (function() {
     var self = this;
-
     /**
      * Token clean up job.
      */
