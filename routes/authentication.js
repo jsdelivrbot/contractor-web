@@ -38,14 +38,14 @@ var AuthRouter = function() {
     self.authenticateUserPromise = function(email, password) {
       var defer = self.Q.defer();
 
-      self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+      await self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
           if(err) {
             //response.send("Could not connect to DB: " + err);
             defer.reject(new Error( "Could not connect to DB: " + err ));
             return;
           }
 
-          const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
+          const query = await client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
           const results = [];
           var jsonData = {};
           query.on('row', (row) => {
@@ -106,13 +106,13 @@ var AuthRouter = function() {
     self.saveGeneratedTokens = function(token) {
       var defer = self.Q.defer();
       if(token.user != undefined){
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+        await self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
 
-            client.query( self.const.QUERY.NEW_USER_TOKEN,
+            await client.query( self.const.QUERY.NEW_USER_TOKEN,
                          ['user_token_seq', token.user.id, token.accessToken, 'Y'],
                          function(err, result) {
                             if (err) {
@@ -169,14 +169,14 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(token){
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+        await self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
 
             console.log("Calling isValidTokenInDBPromise");
-            client.query( self.const.QUERY.CHECK_USER_TOKEN,
+            await client.query( self.const.QUERY.CHECK_USER_TOKEN,
                          [token, 'Y'],
                          function(err, result) {
                            if(err) {
@@ -207,13 +207,13 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(token != undefined) {
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
+        await self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
               defer.reject(new Error( "Could not connect to DB: " + err ));
               return;
             }
 
-            client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
+            await client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
                          ['N', token],
                          function(err, result) {
                            if(err) {
@@ -241,8 +241,10 @@ var AuthRouter = function() {
             console.log("Calling logoutRouter...");
             self.isValidTokenPromise(token)
                 .then(function(successResult){
+                  console.log("Calling logoutRouter(isValidTokenInDBPromise)...");
                   self.isValidTokenInDBPromise(token, successResult)
                       .then(function(){
+                        console.log("Calling logoutRouter(invalidateTokenInDBPromise)...");
                         self.invalidateTokenInDBPromise(token)
                             .then(function(){
                               response.status(201)
