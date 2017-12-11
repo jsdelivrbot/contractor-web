@@ -137,10 +137,13 @@ var AuthRouter = function() {
             var password = req.body.password;
 
             if(email && password) {
+              console.log('Calling Login function (authenticateUserPromise)...');
               self.authenticateUserPromise(email, password)
                   .then(function(data){
+                    console.log('Calling Login function (generateTokens)...');
                     self.generateTokens(data)
                         .then(function(token){
+                          console.log('Calling Login function (saveGeneratedTokens)...');
                           self.saveGeneratedTokens(token)
                               .then(function(token){
                                 response.status(201).json({token:token});
