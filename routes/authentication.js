@@ -293,6 +293,21 @@ var AuthRouter = function() {
       self.logoutRouter();
       //self.generateAccessTokenRouter();
     };
+
+    self.testListener = function(){
+      self.router.post('/test', function(req, response){
+        const { Client } = require('pg')
+        const client = new Client()
+
+        client.connect()
+
+        client.query(self.const.QUERY.FETCH_PROJECTS, [], (err, res) => {
+            console.log("FETCH_PROJECTS result-");
+            console.log(err ? err.stack : res.rows[0].name)
+            client.end()
+          })
+      });
+    }
 };
 
 /**
@@ -300,4 +315,5 @@ var AuthRouter = function() {
  */
 var authRouter = new AuthRouter();
 authRouter.initialize();
-authRouter.listen();
+authRouter.testListener();
+//authRouter.listen();
