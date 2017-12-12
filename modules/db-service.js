@@ -15,6 +15,7 @@ module.exports = (function() {
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
             done();
+            /*
             pgDb.connect(appConst.DB_CONNECT_URI, function(err, client, done) {
                 if(err) {
                   return;
@@ -36,6 +37,7 @@ module.exports = (function() {
                                });
                              });
             });
+            */
           });
 
         dbCleanUpTimer.start();
@@ -45,6 +47,7 @@ module.exports = (function() {
       var appConst = require('./../routes/constants.js');
       var pgDb     = require('pg');
 
+      /*
       pgDb.connect(appConst.DB_CONNECT_URI, function(err, client, done) {
           if(err) {
             return;
@@ -60,6 +63,7 @@ module.exports = (function() {
                          }
                        });
       });
+      */
     }
 
     return {

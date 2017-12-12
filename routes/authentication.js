@@ -297,7 +297,9 @@ var AuthRouter = function() {
     self.testListener = function(){
       self.router.post('/test', function(req, response){
         const { Client } = require('pg')
-        const client = new Client()
+        const client = new Client({
+          connectionString: self.const.DB_CONNECT_URI,
+        })
 
         client.connect()
 
