@@ -296,14 +296,19 @@ var AuthRouter = function() {
 
     self.testListener = function(){
       self.router.post('/test', function(req, response){
+        console.log("Received POST test call...");
         const { Client } = require('pg')
         const client = new Client({
           connectionString: self.const.DB_CONNECT_URI,
         })
 
-        client.connect()
+        console.log("Connecting...");
 
+        client.connect();
+
+        console.log("Query...");
         client.query(self.const.QUERY.FETCH_PROJECTS, [], (err, res) => {
+            console.log("Result...");
             console.log("FETCH_PROJECTS result-");
             console.log(err ? err.stack : res.rows[0].name)
             client.end()
