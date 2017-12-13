@@ -307,12 +307,27 @@ var AuthRouter = function() {
         client.connect();
 
         console.log("Query...");
+
+        const query = {
+          name: 'fetch-projects',
+          text: self.const.QUERY.FETCH_PROJECTS,
+          rowMode: 'array',
+        };
+
+        // promise
+        client.query(query)
+              .then(res => console.log(res.rows[0]))
+              .catch(e => console.error(e.stack))
+
+        /*
         client.query(self.const.QUERY.FETCH_PROJECTS, [], (err, res) => {
             console.log("Result...");
             console.log("FETCH_PROJECTS result-");
             console.log(err ? err.stack : res.rows[0].name)
             client.end()
           })
+          */
+
       });
     }
 };
