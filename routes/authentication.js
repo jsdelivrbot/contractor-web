@@ -311,12 +311,14 @@ var AuthRouter = function() {
         const query = {
           name: 'fetch-projects',
           text: self.const.QUERY.FETCH_PROJECTS,
-          rowMode: 'array',
+          types: {
+              getTypeParser: () => (val) => val
+          }
         };
 
         //
         client.query(query)
-              .then(res => console.log(res.rows[0]))
+              .then(res => console.log(res.rows))
               .catch(e => console.error(e.stack))
         /*
         client.query(self.const.QUERY.FETCH_PROJECTS, [], (err, res) => {
