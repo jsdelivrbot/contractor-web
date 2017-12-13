@@ -318,7 +318,6 @@ var AuthRouter = function() {
         client.query(query)
               .then(res => console.log(res.rows[0]))
               .catch(e => console.error(e.stack))
-
         /*
         client.query(self.const.QUERY.FETCH_PROJECTS, [], (err, res) => {
             console.log("Result...");
