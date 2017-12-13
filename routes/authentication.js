@@ -314,7 +314,7 @@ var AuthRouter = function() {
           rowMode: 'array',
         };
 
-        // promise
+        //
         client.query(query)
               .then(res => console.log(res.rows[0]))
               .catch(e => console.error(e.stack))
