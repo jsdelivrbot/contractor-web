@@ -320,6 +320,8 @@ var AuthRouter = function() {
         client.query(query)
               .then(res => {
                 console.log(res.rows)
+                response.status(201)
+                        .json({status: self.const.SUCCESS, data: res.rows});
                 client.end()
               })
               .catch(e => console.error(e.stack))
