@@ -35,6 +35,7 @@ module.exports = (function() {
     }
 
     var executeQuery = function(queryStr, params){
+      var q     = require('q');
       var defer = q.defer();
 
       if(!queryStr)
