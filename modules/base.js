@@ -32,7 +32,7 @@ module.exports = (function() {
         connection.end();
 
         return defer.promise;
-    },
+    }
 
     var executeQuery = function(queryStr, params){
       var defer = q.defer();
