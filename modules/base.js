@@ -37,12 +37,13 @@ module.exports = (function() {
     var executeQuery = function(queryStr, params){
       var q     = require('q');
       var defer = q.defer();
+      var constants  = require('./constants.js');
 
       if(!queryStr)
           return undefined;
 
       const { Client } = require('pg')
-      client = new Client({ connectionString: self.const.DB_CONNECT_URI });
+      client = new Client({ connectionString: constants.DB_CONNECT_URI });
 
       const query = {
         text: queryStr,
