@@ -43,7 +43,7 @@ module.exports = (function() {
           return undefined;
 
       const { Client } = require('pg')
-      client = new Client({ connectionString: constants.DB_CONNECT_URI });
+      var client = new Client({ connectionString: constants.DB_CONNECT_URI });
 
       const query = {
         text: queryStr,
