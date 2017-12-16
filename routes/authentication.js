@@ -299,8 +299,10 @@ var AuthRouter = function() {
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
                  .then(function(data){
                    console.log(data);
+                   response.status(201).json(data.rows)
                  }, function(error){
                    console.log(error);
+                   response.status(201).json({error:error})
                  });
       });
     }
