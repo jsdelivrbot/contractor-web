@@ -32,9 +32,36 @@ module.exports = (function() {
         connection.end();
 
         return defer.promise;
+    },
+
+    var executeQuery = function(queryStr, params){
+      var defer = q.defer();
+
+      if(!queryStr)
+          return undefined;
+
+      const { Client } = require('pg')
+      client = new Client({ connectionString: self.const.DB_CONNECT_URI });
+
+      const query = {
+        text: queryStr,
+        values: params,
+        types: {getTypeParser: () => (val) => val}
+      };
+
+      client.connect();
+      client.query(query)
+            .then(data => {
+              client.end()
+              defer.resolve(data);
+            })
+            .catch(e => defer.reject(new Error(e.stack)));
+
+      return defer.promise;
     }
 
     return {
-        fetchData : fetchDataInner
+        fetchData : fetchDataInner,
+        executeQuery : executeQuery
     };
 })();

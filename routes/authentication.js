@@ -23,9 +23,6 @@ var AuthRouter = function() {
       self.Q      = require('q');
       self.base   = require('./../modules/base.js');
       self.token  = require('./../modules/token.js');
-
-      const { Client } = require('pg')
-      self.client = new Client({ connectionString: self.const.DB_CONNECT_URI });
     };
 
     /**
@@ -299,23 +296,12 @@ var AuthRouter = function() {
 
     self.testListener = function(){
       self.router.post('/test', function(req, response){
-        self.client.connect();
-
-        const query = {
-          name: 'fetch-projects',
-          text: self.const.QUERY.FETCH_PROJECTS,
-          types: {
-              getTypeParser: () => (val) => val
-          }
-        };
-
-        self.client.query(query)
-              .then(res => {
-                response.status(201)
-                        .json({status: self.const.SUCCESS, data: res.rows});
-                self.client.end()
-              })
-              .catch(e => console.error(e.stack))
+        self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
+                 .then(function(data){
+                   console.log(data);
+                 }, function(error){
+                   console.log(error);
+                 });
       });
     }
 };
