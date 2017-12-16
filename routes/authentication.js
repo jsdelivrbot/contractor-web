@@ -298,11 +298,9 @@ var AuthRouter = function() {
       self.router.post('/test', function(req, response){
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
                  .then(function(data){
-                   console.log(data);
-                   response.status(201).json(data.rows)
+                   response.status(201).json({status: self.const.SUCCESS, data:data.rows})
                  }, function(error){
-                   console.log(error);
-                   response.status(201).json({error:error})
+                   response.status(201).json({status: self.const.FAILED, error:error})
                  });
       });
     }
