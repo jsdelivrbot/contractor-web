@@ -40,7 +40,7 @@ var AuthRouter = function() {
       self.base.executeQuery(self.const.QUERY.AUTH_USER, [email, password])
                .then(function(data){
                  if(data.rowCount == 1){
-                   defer.resolve(data.rows);
+                   defer.resolve({data:data.rows, status: self.const.SUCCESS});
                  } else {
                    defer.reject(new Error("Authenticate error."));
                  }
