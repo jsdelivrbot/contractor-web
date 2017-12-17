@@ -39,6 +39,7 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
       self.base.executeQuery(self.const.QUERY.AUTH_USER, [email, password])
                .then(function(data){
+                 console.log(data.rowCount)
                  console.log(data)
                  console.log("Size:" + self._.size(data))
                  //response.status(201).json({status: self.const.SUCCESS, data:data.rows})
