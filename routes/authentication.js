@@ -125,6 +125,7 @@ var AuthRouter = function() {
      */
     self.saveGeneratedTokens = function(token) {
       var defer = self.Q.defer();
+      
       if(token.user != undefined){
         self.base.executeQuery(self.const.QUERY.NEW_USER_TOKEN,
                   ['user_token_seq', token.user.id, token.accessToken, 'Y'])
@@ -133,6 +134,7 @@ var AuthRouter = function() {
                  }, function(error){
                    defer.reject(new Error(error));
                  });
+      }
         /*
         self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
