@@ -33,9 +33,20 @@ var AuthRouter = function() {
     };
 
     /**
-     *
+     * Authenticate User.
      */
     self.authenticateUserPromise = function(email, password) {
+      var defer = self.Q.defer();
+      self.base.executeQuery(self.const.QUERY.AUTH_USER, [email, password])
+               .then(function(data){
+                 console.log(self._.size(data))
+                 //response.status(201).json({status: self.const.SUCCESS, data:data.rows})
+               }, function(error){
+                 //response.status(201).json({status: self.const.FAILED, error:error})
+               });
+
+      return defer.promise;
+      /*
       var defer = self.Q.defer();
 
       self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
@@ -69,6 +80,7 @@ var AuthRouter = function() {
        });
 
        return defer.promise;
+       */
     }
 
     /**
@@ -290,7 +302,7 @@ var AuthRouter = function() {
     self.listen = function() {
     	console.log('Listening auth api calls...');
       self.loginRouter();
-      self.logoutRouter();
+      //self.logoutRouter();
       //self.generateAccessTokenRouter();
     };
 
@@ -312,4 +324,4 @@ var AuthRouter = function() {
 var authRouter = new AuthRouter();
 authRouter.initialize();
 authRouter.testListener();
-//authRouter.listen();
+authRouter.listen();
