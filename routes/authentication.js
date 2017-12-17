@@ -112,6 +112,8 @@ var AuthRouter = function() {
 
           var userToken = {user: data.data, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
 
+          console.log('generateTokens data - ' + data.data);
+
           defer.resolve(userToken);
       } else {
           defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
