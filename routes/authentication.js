@@ -39,12 +39,15 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
       self.base.executeQuery(self.const.QUERY.AUTH_USER, [email, password])
                .then(function(data){
-                 console.log(data.rowCount)
-                 console.log(data)
-                 console.log("Size:" + self._.size(data))
-                 //response.status(201).json({status: self.const.SUCCESS, data:data.rows})
+                 if(data.rowCount == 1){
+                   defer.resolve(data.rows);
+                 } else {
+                   defer.reject(new Error("Authenticate error."));
+                 }
+                 //console.log(data)
+                 //console.log("Size:" + self._.size(data))
                }, function(error){
-                 //response.status(201).json({status: self.const.FAILED, error:error})
+                 defer.reject(new Error(error));
                });
 
       return defer.promise;
@@ -123,6 +126,14 @@ var AuthRouter = function() {
     self.saveGeneratedTokens = function(token) {
       var defer = self.Q.defer();
       if(token.user != undefined){
+        self.base.executeQuery(self.const.QUERY.NEW_USER_TOKEN,
+                  ['user_token_seq', token.user.id, token.accessToken, 'Y'])
+                 .then(function(data){
+                   defer.resolve(token);
+                 }, function(error){
+                   defer.reject(new Error(error));
+                 });
+        /*
         self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
             if(err) {
               defer.reject(new Error( "Could not connect to DB: " + err ));
@@ -145,6 +156,8 @@ var AuthRouter = function() {
       } else {
         defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
       }
+      */
+
       return defer.promise;
     }
 
