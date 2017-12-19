@@ -96,23 +96,23 @@ var AuthRouter = function() {
 
       if(data.status === self.const.SUCCESS) {
           var user = data.data;
-          console.log(user.id + '-' + user.userName);
+          console.log(user.id + '-' + user.user_name);
           var cTimeStamp  = Date.now();
           var accessToken = self.jwt.sign({username:user.id + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
                             //self.const.JWT_ACCESS_TOKEN_SECRET + '_' + cTimeStamp,
                             {expiresIn: self.const.ACCESS_TOKEN_EXPIRY_TIME_IN_SEC});
 
-          var refreshToken = self.jwt.sign({username:user.id + '_' + user.userName + '_' + cTimeStamp},
+          var refreshToken = self.jwt.sign({username:user.id + '_' + user.user_name + '_' + cTimeStamp},
                              self.const.JWT_REFRESH_TOKEN_SECRET,
                              //self.const.JWT_REFRESH_TOKEN_SECRET + '_' + cTimeStamp,
                              {expiresIn: self.const.REFRESH_TOKEN_EXPIRY_TIME_IN_HOURS});
 
           console.log('generateTokens accessToken - ' + accessToken + ' refreshToken - ' + refreshToken);
 
-          var userToken = {user: data, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
+          var userToken = {user: user, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
 
-          console.log('generateTokens user token - ' + userToken);
+          console.log('generateTokens user  - ' + user);
 
           defer.resolve(userToken);
       } else {
