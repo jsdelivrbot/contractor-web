@@ -234,20 +234,9 @@ var AuthRouter = function() {
     self.listen = function() {
     	console.log('Listening auth api calls...');
       self.loginRouter();
-      //self.logoutRouter();
+      self.logoutRouter();
       //self.generateAccessTokenRouter();
     };
-
-    self.testListener = function(){
-      self.router.post('/test', function(req, response){
-        self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
-                 .then(function(data){
-                   response.status(201).json({status: self.const.SUCCESS, data:data.rows})
-                 }, function(error){
-                   response.status(201).json({status: self.const.FAILED, error:error})
-                 });
-      });
-    }
 };
 
 /**
@@ -255,5 +244,4 @@ var AuthRouter = function() {
  */
 var authRouter = new AuthRouter();
 authRouter.initialize();
-authRouter.testListener();
 authRouter.listen();
