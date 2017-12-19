@@ -40,7 +40,7 @@ var AuthRouter = function() {
       self.base.executeQuery(self.const.QUERY.AUTH_USER, [email, password])
                .then(function(data){
                  if(data.rowCount == 1){
-                   defer.resolve({data:data.rows, status: self.const.SUCCESS});
+                   defer.resolve({data:data.rows[0], status: self.const.SUCCESS});
                  } else {
                    defer.reject(new Error("Authenticate error."));
                  }
@@ -110,9 +110,9 @@ var AuthRouter = function() {
 
           console.log('generateTokens accessToken - ' + accessToken + ' refreshToken - ' + refreshToken);
 
-          var userToken = {user: data.data, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
+          var userToken = {user: data, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
 
-          console.log('generateTokens data - ' + data.data);
+          console.log('generateTokens user token - ' + userToken);
 
           defer.resolve(userToken);
       } else {
