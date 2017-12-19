@@ -44,48 +44,11 @@ var AuthRouter = function() {
                  } else {
                    defer.reject(new Error("Authenticate error."));
                  }
-                 //console.log(data)
-                 //console.log("Size:" + self._.size(data))
                }, function(error){
                  defer.reject(new Error(error));
                });
 
       return defer.promise;
-      /*
-      var defer = self.Q.defer();
-
-      self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-          if(err) {
-            //response.send("Could not connect to DB: " + err);
-            defer.reject(new Error( "Could not connect to DB: " + err ));
-            self.pg.end();
-            return;
-          }
-
-          const query = client.query('SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',[email, password]);
-          const results = [];
-          var jsonData = {};
-          query.on('row', (row) => {
-            //console.log('Row data - ' + row.id);
-            //results.push(JSON.stringify(row));
-            jsonData = {id:row.id, userName:row.user_name}
-          });
-
-          query.on('end', () => {
-            done();
-            if(self._.size(jsonData) == 0) {
-              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-            } else {
-              var jsonResult = {status: self.const.SUCCESS, data: jsonData};
-              defer.resolve(jsonResult);
-            }
-
-            self.pg.end();
-          });
-       });
-
-       return defer.promise;
-       */
     }
 
     /**
@@ -96,7 +59,7 @@ var AuthRouter = function() {
 
       if(data.status === self.const.SUCCESS) {
           var user = data.data;
-          console.log(user.id + '-' + user.user_name);
+          //console.log(user.id + '-' + user.user_name);
           var cTimeStamp  = Date.now();
           var accessToken = self.jwt.sign({username:user.id + '_' + cTimeStamp},
                             self.const.JWT_ACCESS_TOKEN_SECRET,
@@ -112,7 +75,7 @@ var AuthRouter = function() {
 
           var userToken = {user: user, accessToken:accessToken, refreshToken:refreshToken, appType:'web'}
 
-          console.log('generateTokens user  - ' + user);
+          //console.log('generateTokens user  - ' + user);
 
           defer.resolve(userToken);
       } else {
@@ -129,8 +92,6 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(token.user != undefined){
-        console.log("saveGeneratedTokens");
-        console.log('user_token_seq - ID:' + token.user.id + ' accessToken-' + token.accessToken + 'Y');
         self.base.executeQuery(self.const.QUERY.NEW_USER_TOKEN,
                   ['user_token_seq', token.user.id, token.accessToken, 'Y'])
                  .then(function(data){
@@ -139,30 +100,6 @@ var AuthRouter = function() {
                    defer.reject(new Error(error));
                  });
       }
-        /*
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-            if(err) {
-              defer.reject(new Error( "Could not connect to DB: " + err ));
-              self.pg.end();
-              return;
-            }
-
-            client.query( self.const.QUERY.NEW_USER_TOKEN,
-                         ['user_token_seq', token.user.id, token.accessToken, 'Y'],
-                         function(err, result) {
-                            if (err) {
-                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-                            } else {
-                              defer.resolve(token);
-                            }
-
-                            self.pg.end();
-                         });
-        });
-      } else {
-        defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-      }
-      */
 
       return defer.promise;
     }
@@ -176,13 +113,13 @@ var AuthRouter = function() {
             var password = req.body.password;
 
             if(email && password) {
-              console.log('Calling Login function (authenticateUserPromise)...');
+              //console.log('Calling Login function (authenticateUserPromise)...');
               self.authenticateUserPromise(email, password)
                   .then(function(data){
-                    console.log('Calling Login function (generateTokens)...');
+                    //console.log('Calling Login function (generateTokens)...');
                     self.generateTokens(data)
                         .then(function(token){
-                          console.log('Calling Login function (saveGeneratedTokens)...');
+                          //console.log('Calling Login function (saveGeneratedTokens)...');
                           self.saveGeneratedTokens(token)
                               .then(function(token){
                                 response.status(201).json({token:token});
@@ -207,33 +144,19 @@ var AuthRouter = function() {
     self.isValidTokenInDBPromise = function(token, successResult){
       var defer = self.Q.defer();
 
-      if(token){
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-            if(err) {
-              defer.reject(new Error( "Could not connect to DB: " + err ));
-              self.pg.end();
-              return;
-            }
-
-            console.log("Calling isValidTokenInDBPromise");
-            client.query( self.const.QUERY.CHECK_USER_TOKEN,
-                         [token, 'Y'],
-                         function(err, result) {
-                           if(err) {
-                             defer.reject({error_code:self.const.ERROR_CODE.DB_CONNECTION});
-                           } else {
-                             if(result.rows.length == 1) {
-                               defer.resolve();
-                             } else if (result.rows.length > 1) {
-                               defer.reject({error_code:self.const.ERROR_CODE.DUPLICATE_DB_DATA});
-                             } else  {
-                               defer.reject({error_code:self.const.ERROR_CODE.NO_RECORDS});
-                             }
-                           }
-                           self.pg.end();
-                         }
-                       );
-        });
+      if(token) {
+        self.base.executeQuery(self.const.QUERY.CHECK_USER_TOKEN, [token, 'Y'])
+                 .then(function(data){
+                   if(data.rowCount == 1) {
+                     defer.resolve();
+                   } else if (data.rowCount > 1) {
+                     defer.reject({error_code:self.const.ERROR_CODE.DUPLICATE_DB_DATA});
+                   } else  {
+                     defer.reject({error_code:self.const.ERROR_CODE.NO_RECORDS});
+                   }
+                 }, function(error){
+                   defer.reject(new Error(error));
+                 });
       } else {
         defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
       }
