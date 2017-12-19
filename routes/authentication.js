@@ -130,7 +130,7 @@ var AuthRouter = function() {
 
       if(token.user != undefined){
         console.log("saveGeneratedTokens");
-        console.log('user_token_seq' + token.user.id + token.accessToken + 'Y');
+        console.log('user_token_seq - ID:' + token.user.id + ' accessToken-' + token.accessToken + 'Y');
         self.base.executeQuery(self.const.QUERY.NEW_USER_TOKEN,
                   ['user_token_seq', token.user.id, token.accessToken, 'Y'])
                  .then(function(data){
