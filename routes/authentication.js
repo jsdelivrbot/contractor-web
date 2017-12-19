@@ -171,24 +171,12 @@ var AuthRouter = function() {
       var defer = self.Q.defer();
 
       if(token != undefined) {
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-            if(err) {
-              defer.reject(new Error( "Could not connect to DB: " + err ));
-              self.pg.end();
-              return;
-            }
-
-            client.query( self.const.QUERY.AUTH_UPDATE_USER_TOKEN,
-                         ['N', token],
-                         function(err, result) {
-                           if(err) {
-                             defer.reject({error_code:self.const.ERROR_CODE.DB_CONNECTION});
-                           } else {
-                             defer.resolve();
-                           }
-                           self.pg.end();
-                         });
-        });
+        self.base.executeQuery(self.const.QUERY.AUTH_UPDATE_USER_TOKEN, ['N', token])
+                 .then(function(data) {
+                   defer.resolve();
+                 }, function(error){
+                   defer.reject(new Error(error));
+                 });
       } else {
         defer.reject({error_code:self.const.ERROR_CODE.IVALID_TOKEN});
       }
