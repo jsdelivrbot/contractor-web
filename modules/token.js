@@ -18,7 +18,9 @@ module.exports = (function() {
           return;
         }
 
+        console.log("isValidToken - " + token);
         jwt.verify(token, appConst.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
+          console.log("isValidToken result - " + err);
            if(!err){
              defer.resolve(true);
            } else {
