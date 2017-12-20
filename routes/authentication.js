@@ -193,34 +193,6 @@ var AuthRouter = function() {
           var token = req.body.token;
           if(token) {
             console.log("Calling logoutRouter...");
-
-            if(self.isValidTokenPromise(token)) {
-              self.isValidTokenInDBPromise(token, successResult)
-                  .then(function() {
-                    console.log("Calling logoutRouter(invalidateTokenInDBPromise)...");
-                    self.invalidateTokenInDBPromise(token)
-                        .then(function(){
-                          response.status(201)
-                                  .json({status: self.const.SUCCESS});
-                        }, function(error){
-                          response.status(201)
-                                  .json({status: self.const.FAILED,
-                                         error_code: error.error_code,
-                                         error:error});
-                        });
-                  }, function(error){
-                    response.status(201)
-                            .json({status: self.const.FAILED,
-                                   error_code: error.error_code,
-                                   error:error});
-                  });
-            } else {
-              response.status(201)
-                      .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
-            }
-          }
-
-            /*
             self.isValidTokenPromise(token)
                 .then(function(successResult){
                   console.log("Calling logoutRouter(isValidTokenInDBPromise)...");
@@ -253,7 +225,6 @@ var AuthRouter = function() {
             response.status(201)
                     .json({status: self.const.FAILED, error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
           }
-          */
       });
     }
 
