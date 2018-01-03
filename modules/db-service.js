@@ -11,12 +11,13 @@ module.exports = (function() {
         var _        = require("underscore");
         var pgDb     = require('pg');
         var tokenModule = require('./token.js');
+        var base     = require('./../modules/base.js');
 
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
             done();
 
-            self.base.executeQuery(appConst.QUERY.FIND_USER_TOKEN, ['N'])
+            base.executeQuery(appConst.QUERY.FIND_USER_TOKEN, ['N'])
                      .then(function(data) {
                        _.each(result.rows, function(row){
                          var id    = row.id;
