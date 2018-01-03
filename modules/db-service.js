@@ -16,9 +16,10 @@ module.exports = (function() {
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
             done();
-
+            console.log("Checking non active token...");
             base.executeQuery(appConst.QUERY.FIND_USER_TOKEN, ['N'])
-                     .then(function(data) {
+                     .then(function(result) {
+                       console.log("Found some npn active tokens - " + result);
                        _.each(result.rows, function(row){
                          var id    = row.id;
                          var token = row.token;
