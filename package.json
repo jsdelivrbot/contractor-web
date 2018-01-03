@@ -11,19 +11,20 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "body-parser": "*",
+    "cookie-parser": "*",
     "ejs": "2.5.6",
     "express": "4.15.2",
-    "body-parser":"*",
-    "pg":"7.4.0",
-    "cookie-parser":"*",
-    "path":"*",
-    "underscore": "*",
+    "heroku": "^0.2.0",
     "jsonwebtoken": "*",
+    "md5": "*",
+    "path": "*",
+    "pg": "7.4.0",
     "promise": "*",
     "q": "*",
-    "md5": "*",
-    "sequelize":"4.11.3",
-    "timer-jobs":"0.1.0"
+    "sequelize": "4.11.3",
+    "timer-jobs": "0.1.0",
+    "underscore": "*"
   },
   "devDependencies": {
     "request": "^2.81.0",
