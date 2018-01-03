@@ -77,15 +77,7 @@ var AuthRouter = function() {
 
           console.log('generateTokens user  - ' + user);
 
-          self.isValidTokenPromise(accessToken)
-              .then(function(successResult){
-                console.log(successResult);
-                defer.resolve(userToken);
-              }, function(error) {
-                console.log(error);
-              });
-
-          //defer.resolve(userToken);
+          defer.resolve(userToken);
       } else {
           defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
       }
