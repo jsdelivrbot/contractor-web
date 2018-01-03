@@ -18,12 +18,13 @@ module.exports = (function() {
           return;
         }
 
-        console.log("isValidToken - " + token);
+        console.log("Calling isValidToken for token - " + token);
         jwt.verify(token, appConst.JWT_ACCESS_TOKEN_SECRET, function(err, decoded) {
-          console.log("isValidToken result - " + err);
-           if(!err){
+           if(err === null){
+             console.log("isValidToken - " + true);
              defer.resolve(true);
            } else {
+             console.log("isValidToken - " + false);
              defer.reject(new Error("Token is expired/invalid: - " + err));
            }
         });
