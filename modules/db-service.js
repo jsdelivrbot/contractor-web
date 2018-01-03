@@ -19,7 +19,7 @@ module.exports = (function() {
             console.log("Checking non active token...");
             base.executeQuery(appConst.QUERY.FIND_USER_TOKEN, ['N'])
                      .then(function(result) {
-                       console.log("Found some npn active tokens - " + result);
+                       console.log("Found some non active tokens - " + result.rows);
                        _.each(result.rows, function(row){
                          var id    = row.id;
                          var token = row.token;
@@ -66,8 +66,9 @@ module.exports = (function() {
     var deleteUserTokenRecord = function(userTokenID) {
       var appConst = require('./../routes/constants.js');
       var pgDb     = require('pg');
+      var base     = require('./../modules/base.js');
 
-      self.base.executeQuery(appConst.QUERY.DELETE_USER_TOKEN, [userTokenID])
+      base.executeQuery(appConst.QUERY.DELETE_USER_TOKEN, [userTokenID])
                .then(function(data) {
                  console.log('User Token with ID:' + userTokenID + ' has been deleted successfully!');
                }, function(error) {
