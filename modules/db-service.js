@@ -15,6 +15,24 @@ module.exports = (function() {
         var dbCleanUpTimer = new TimerJob({interval: appConst.TIMER.DB_CLEAN_UP},
           function(done) {
             done();
+
+            self.base.executeQuery(appConst.QUERY.FIND_USER_TOKEN, ['N'])
+                     .then(function(data) {
+                       _.each(result.rows, function(row){
+                         var id    = row.id;
+                         var token = row.token;
+
+                         tokenModule.isValidToken(token)
+                              .then(function(){
+                                // DO NOTHING
+                              }, function(error){
+                                console.log('Token is expired. Deleting this token with ID:' + id + ' - token:' + token);
+                                deleteUserTokenRecord(id);
+                              });
+                       });
+                     }, function(error){
+                       comsole.log(error);
+                     });
             /*
             pgDb.connect(appConst.DB_CONNECT_URI, function(err, client, done) {
                 if(err) {
@@ -46,6 +64,13 @@ module.exports = (function() {
     var deleteUserTokenRecord = function(userTokenID) {
       var appConst = require('./../routes/constants.js');
       var pgDb     = require('pg');
+
+      self.base.executeQuery(appConst.QUERY.DELETE_USER_TOKEN, [userTokenID])
+               .then(function(data) {
+                 console.log('User Token with ID:' + userTokenID + ' has been deleted successfully!');
+               }, function(error) {
+                 console.log('Error has occured while deleting user token with ID:' + userTokenID);
+               });
 
       /*
       pgDb.connect(appConst.DB_CONNECT_URI, function(err, client, done) {
