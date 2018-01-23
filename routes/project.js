@@ -31,8 +31,12 @@ var ProjectRouter = function() {
     self.fetchProjects = function(params){
         var defer = self.Q.defer();
 
-        console.log(params.name);
-        console.log(params.id);
+        console.log(params);
+        
+        if(params) {
+          console.log(params.name);
+          console.log(params.id);
+        }
 
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
                          .then(function(data){
