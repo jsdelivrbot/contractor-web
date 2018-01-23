@@ -33,7 +33,7 @@ var ProjectRouter = function() {
 
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
                          .then(function(data){
-                             defer.resolve({data:data.rows.data, status: self.const.SUCCESS});
+                             defer.resolve({data:data.rows, status: self.const.SUCCESS});
                          }, function(error){
                            defer.reject(new Error(error));
                          });
