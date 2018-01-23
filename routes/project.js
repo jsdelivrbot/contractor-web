@@ -32,7 +32,7 @@ var ProjectRouter = function() {
         var defer = self.Q.defer();
 
         var params = ["%" + (queryParams.name != undefined ? queryParams.name : "") + "%",
-                      queryParams.id != undefined ? "AND ID=" + queryParams.id : ""]
+                      queryParams.id != undefined ? queryParams.id : ""];
 
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, params)
                          .then(function(data){
