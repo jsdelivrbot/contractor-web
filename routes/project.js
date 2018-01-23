@@ -30,31 +30,13 @@ var ProjectRouter = function() {
      */
     self.fetchProjects = function(token){
         var defer = self.Q.defer();
-        
+
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
                          .then(function(data){
-                             defer.resolve({data:data.rows, status: self.const.SUCCESS});
+                             defer.resolve({data:data.rows.data, status: self.const.SUCCESS});
                          }, function(error){
                            defer.reject(new Error(error));
                          });
-
-        /*
-        self.pg.connect(self.const.DB_CONNECT_URI, function(err, client, done) {
-            if(err) {
-              defer.reject(new Error( "Could not connect to DB: " + err ));
-              return;
-            }
-            console.log("Fetching projects");
-            client.query( self.const.QUERY.FETCH_PROJECTS, [''],
-                         function(err, result) {
-                            if (err) {
-                              defer.reject(self.const.ERROR_CODE.LOGIN_FORM_INVALID);
-                            } else {
-                              defer.resolve(result);
-                            }
-            });
-        });
-        */
 
         return defer.promise;
     }
