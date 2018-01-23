@@ -25,7 +25,7 @@ module.exports = Object.freeze({
         NEW_USER_TOKEN: 'INSERT INTO user_token (id, user_id, token, is_active) VALUES (nextval($1), $2, $3, $4)',
         FIND_USER_TOKEN: 'SELECT id, token FROM user_token WHERE is_active = $1',
         DELETE_USER_TOKEN: 'DELETE FROM user_token WHERE ID = $1',
-        FETCH_PROJECTS: 'SELECT ID, NAME, CREATE_DATE from user_projects WHERE NAME LIKE %$1%',
+        FETCH_PROJECTS: 'SELECT ID, NAME, CREATE_DATE from user_projects WHERE NAME LIKE $1',
         CHECK_USER_TOKEN: 'SELECT id FROM user_token WHERE token = $1 AND is_active = $2',
         AUTH_USER: 'SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1'
     }
