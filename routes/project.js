@@ -28,14 +28,14 @@ var ProjectRouter = function() {
     /**
      * Fetch projects per token.
      */
-    self.fetchProjects = function(params){
+    self.fetchProjects = function(queryParams){
         var defer = self.Q.defer();
 
-        console.log(params);
-        
-        if(params) {
-          console.log(params.name);
-          console.log(params.id);
+        console.log(queryParams);
+
+        if(!queryParams.length) {
+          console.log(queryParams.name);
+          console.log(queryParams.id);
         }
 
         self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, [])
@@ -58,7 +58,7 @@ var ProjectRouter = function() {
         if(token) {
           self.token.isValidToken(token)
               .then(function(successResult){
-                self.fetchProjects(req.params)
+                self.fetchProjects(req.query)
                     .then(function(projects){
                         response.status(201).json({data:projects});
                     });
