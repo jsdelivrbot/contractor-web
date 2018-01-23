@@ -35,7 +35,7 @@ var ProjectRouter = function() {
           console.log("Name - " + queryParams.name);
         }
 
-        self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, ["%" + queryParams.name])
+        self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, ["%" + queryParams.name + "%"])
                          .then(function(data){
                              console.log(data)
                              defer.resolve({data:data.rows, status: self.const.SUCCESS});
