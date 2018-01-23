@@ -31,10 +31,18 @@ var ProjectRouter = function() {
     self.fetchProjects = function(queryParams){
         var defer = self.Q.defer();
 
-        var params = ["%" + (queryParams.name != undefined ? queryParams.name : "") + "%",
-                      queryParams.id != undefined ? " AND ID=" + queryParams.id : ""];
+        var params = [];
+        var query  = self.const.QUERY.FETCH_PROJECTS_ALL;
 
-        self.base.executeQuery(self.const.QUERY.FETCH_PROJECTS, params)
+        if(queryParams.id != undefined) {
+          query = self.const.QUERY.FETCH_PROJECTS_BY_ID;
+          params = [queryParams.id];
+        } else if(queryParams.name != undefined) {
+          query = self.const.QUERY.FETCH_PROJECTS_BY_NAME;
+          params = ["%" + queryParams.name + "%"];
+        }
+
+        self.base.executeQuery(query, params)
                          .then(function(data){
                              console.log(data)
                              defer.resolve({data:data.rows, status: self.const.SUCCESS});
