@@ -74,25 +74,10 @@ var ProjectRouter = function() {
      */
     self.fetchProjectRouter = function() {
       self.router.get('/', self.checkToken, function(req, response) {
-        var token = req.query.token;
-        if(token) {
-          self.token.isValidToken(token)
-              .then(function(successResult){
                 self.fetchProjects(req.query)
                     .then(function(projects){
                         response.status(201).json({data:projects});
                     });
-              }, function(error){
-                response.status(201)
-                        .json({status: self.const.FAILED,
-                               error_code: error.error_code,
-                               error:error});
-              });
-        } else {
-          response.status(201)
-                  .json({status: self.const.FAILED,
-                         error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
-        }
       });
     };
 
