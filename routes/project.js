@@ -73,7 +73,7 @@ var ProjectRouter = function() {
      * Search projects.
      */
     self.fetchProjectRouter = function() {
-      self.router.get('/', , self.checkToken, function(req, response) {
+      self.router.get('/', self.checkToken, function(req, response) {
         var token = req.query.token;
         if(token) {
           self.token.isValidToken(token)
