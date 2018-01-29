@@ -111,13 +111,13 @@ var ProjectRouter = function() {
               .then(function(successResult){
                 next();
               }, function(error){
-                response.status(201)
+                res.status(201)
                         .json({status: self.const.FAILED,
                                error_code: error.error_code,
-                               error:error});                
+                               error:error});
               });
         } else {
-          response.status(201)
+          res.status(201)
                   .json({status: self.const.FAILED,
                          error_code: 8888,
                          error:"Token is not valid."});
