@@ -54,12 +54,27 @@ var ProjectRouter = function() {
     }
 
     /**
+     * Create a new project record.
+     */
+    self.createProject = function(){
+      var defer = self.Q.defer();
+      self.base.executeQuery(query, params)
+               .then(function(data){
+                     defer.resolve({status: self.const.SUCCESS});
+               }, function(error){
+                     defer.reject(new Error(error));
+               }
+      );
+
+      return defer.promise;
+    }
+
+    /**
      * Search projects.
      */
     self.fetchProjectRouter = function() {
-      self.router.get('/', function(req, response) {
+      self.router.get('/', , self.checkToken, function(req, response) {
         var token = req.query.token;
-        console.log("Token - " + token);
         if(token) {
           self.token.isValidToken(token)
               .then(function(successResult){
@@ -82,10 +97,37 @@ var ProjectRouter = function() {
     };
 
     /**
+     * Check token if exist.
+     */
+    self.checkToken = function(req, res, next) {
+        console.log('The response will be sent by the next function ...');
+        next();
+    }
+
+    /**
      * Create projects.
      */
     self.createProjectRouter = function() {
-      self.router.post('/', function(req, response) {
+      self.router.post('/', self.checkToken, unction(req, response) {
+        var token = req.body.token;
+        if(token) {
+          self.token.isValidToken(token)
+              .then(function(successResult){
+                self.createProject(req.body)
+                    .then(function(status){
+                        response.status(201).json({status: status});
+                    });
+              }, function(error){
+                response.status(201)
+                        .json({status: self.const.FAILED,
+                               error_code: error.error_code,
+                               error:error});
+              });
+        } else {
+          response.status(201)
+                  .json({status: self.const.FAILED,
+                         error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
+        }
       });
     };
 
