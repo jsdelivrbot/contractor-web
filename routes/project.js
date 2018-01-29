@@ -101,7 +101,27 @@ var ProjectRouter = function() {
      */
     self.checkToken = function(req, res, next) {
         console.log('The response will be sent by the next function ...');
-        next();
+
+        var token = req.query.token;
+
+        token = (token == null ? req.body.toke : token);
+
+        if(token) {
+          self.token.isValidToken(token)
+              .then(function(successResult){
+                next();
+              }, function(error){
+                response.status(201)
+                        .json({status: self.const.FAILED,
+                               error_code: error.error_code,
+                               error:error});                
+              });
+        } else {
+          response.status(201)
+                  .json({status: self.const.FAILED,
+                         error_code: 8888,
+                         error:"Token is not valid."});
+        }
     }
 
     /**
