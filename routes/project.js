@@ -108,7 +108,7 @@ var ProjectRouter = function() {
      * Create projects.
      */
     self.createProjectRouter = function() {
-      self.router.post('/', self.checkToken, unction(req, response) {
+      self.router.post('/', self.checkToken, function(req, response) {
         var token = req.body.token;
         if(token) {
           self.token.isValidToken(token)
