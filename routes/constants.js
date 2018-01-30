@@ -29,6 +29,7 @@ module.exports = Object.freeze({
         FETCH_PROJECTS_BY_ID: 'SELECT ID, NAME, CREATE_DATE from user_projects WHERE ID=$1',
         FETCH_PROJECTS_BY_NAME: 'SELECT ID, NAME, CREATE_DATE from user_projects WHERE NAME LIKE $1',
         CHECK_USER_TOKEN: 'SELECT id FROM user_token WHERE token = $1 AND is_active = $2',
-        AUTH_USER: 'SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1'
+        AUTH_USER: 'SELECT id, user_name FROM AUTH_USER where email = $1 AND password = $2 LIMIT 1',
+        NEW_PROJECT: 'INSERT INTO user_projects VALUES (nextval($1), $2, now())'
     }
 });

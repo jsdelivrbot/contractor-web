@@ -56,15 +56,21 @@ var ProjectRouter = function() {
     /**
      * Create a new project record.
      */
-    self.createProject = function(){
+    self.createProject = function(params){
       var defer = self.Q.defer();
-      self.base.executeQuery(query, params)
-               .then(function(data){
-                     defer.resolve({status: self.const.SUCCESS});
-               }, function(error){
-                     defer.reject(new Error(error));
-               }
-      );
+
+      if(params.projectName) {
+        var queryParams = ['user_project_seq', params.projectName];
+        self.base.executeQuery(self.const.QUERY.NEW_PROJECT, queryParams)
+                 .then(function(data){
+                       defer.resolve({status: self.const.SUCCESS});
+                 }, function(error){
+                       defer.reject(new Error(error));
+                 }
+        );
+      } else {
+        defer.reject(new Error("Insaficient project create params"));
+      }
 
       return defer.promise;
     }
@@ -114,25 +120,15 @@ var ProjectRouter = function() {
      */
     self.createProjectRouter = function() {
       self.router.post('/', self.checkToken, function(req, response) {
-        var token = req.body.token;
-        if(token) {
-          self.token.isValidToken(token)
-              .then(function(successResult){
-                self.createProject(req.body)
-                    .then(function(status){
-                        response.status(201).json({status: status});
-                    });
+          self.createProject(req.body)
+              .then(function(status){
+                  response.status(201).json({status: status});
               }, function(error){
-                response.status(201)
-                        .json({status: self.const.FAILED,
-                               error_code: error.error_code,
-                               error:error});
+                  response.status(201)
+                          .json({status: self.const.FAILED,
+                                 error_code: error.error_code,
+                                 error:error});
               });
-        } else {
-          response.status(201)
-                  .json({status: self.const.FAILED,
-                         error_code: self.const.ERROR_CODE.REFRESH_TOKEN_IS_REQUIRED});
-        }
       });
     };
 
