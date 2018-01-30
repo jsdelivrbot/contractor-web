@@ -59,15 +59,28 @@ var ProjectRouter = function() {
     self.createProject = function(params){
       var defer = self.Q.defer();
 
-      if(params.projectName) {
-        var queryParams = ['user_project_seq', params.projectName];
-        self.base.executeQuery(self.const.QUERY.NEW_PROJECT, queryParams)
-                 .then(function(data){
-                       defer.resolve({status: self.const.SUCCESS});
-                 }, function(error){
-                       defer.reject(new Error(error));
-                 }
-        );
+      if(params.name) {
+        // check if this project already exist
+        self.fetchProjects(params)
+            .then(function(result){
+                console.log(result.data);
+                console.log(result.data.length);
+                
+                var recordNum = result.data.length;
+                if(recordNum == 0) {
+                  var queryParams = ['user_project_seq', params.name];
+                  self.base.executeQuery(self.const.QUERY.NEW_PROJECT, queryParams)
+                           .then(function(data){
+                                 defer.resolve({status: self.const.SUCCESS});
+                           }, function(error){
+                                 defer.reject(new Error(error));
+                           }
+                  );
+                } else {
+                  defer.reject(new Error("The project with this name <"
+                  + params.name + "> is already exist"));
+                }
+            });
       } else {
         defer.reject(new Error("Insaficient project create params"));
       }
