@@ -63,9 +63,6 @@ var ProjectRouter = function() {
         // check if this project already exist
         self.fetchProjects(params)
             .then(function(result){
-                console.log(result.data);
-                console.log(result.data.length);
-                
                 var recordNum = result.data.length;
                 if(recordNum == 0) {
                   var queryParams = ['user_project_seq', params.name];
@@ -117,7 +114,6 @@ var ProjectRouter = function() {
               }, function(error){
                 res.status(201)
                         .json({status: self.const.FAILED,
-                               error_code: error.error_code,
                                error:error});
               });
         } else {
@@ -138,8 +134,7 @@ var ProjectRouter = function() {
                   response.status(201).json({status: status});
               }, function(error){
                   response.status(201)
-                          .json({status: self.const.FAILED,
-                                 error_code: error.error_code,
+                          .json({status: self.const.FAILED,                                 
                                  error:error});
               });
       });
