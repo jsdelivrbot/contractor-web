@@ -65,7 +65,7 @@ var ProjectRouter = function() {
             .then(function(result){
                 var recordNum = result.data.length;
                 if(recordNum == 0) {
-                  var queryParams = ['user_project_seq', params.name];
+                  var queryParams = [self.const.SEQUENCE.USER_PROJECT, params.name];
                   self.base.executeQuery(self.const.QUERY.NEW_PROJECT, queryParams)
                            .then(function(data){
                                  defer.resolve({status: self.const.SUCCESS});
@@ -134,7 +134,7 @@ var ProjectRouter = function() {
                   response.status(201).json({status: status});
               }, function(error){
                   response.status(201)
-                          .json({status: self.const.FAILED,                                 
+                          .json({status: self.const.FAILED,
                                  error:error});
               });
       });

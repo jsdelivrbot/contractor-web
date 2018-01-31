@@ -93,7 +93,7 @@ var AuthRouter = function() {
 
       if(token.user != undefined){
         self.base.executeQuery(self.const.QUERY.NEW_USER_TOKEN,
-                  ['user_token_seq', token.user.id, token.accessToken, 'Y'])
+                  [self.const.SEQUENCE.USER_TOKEN, token.user.id, token.accessToken, 'Y'])
                  .then(function(data){
                    defer.resolve(token);
                  }, function(error){
@@ -192,13 +192,10 @@ var AuthRouter = function() {
       self.router.post('/logout', function(req, response){
           var token = req.body.token;
           if(token) {
-            console.log("Calling logoutRouter...");
             self.isValidTokenPromise(token)
                 .then(function(successResult){
-                  console.log("Calling logoutRouter(isValidTokenInDBPromise)...");
                   self.isValidTokenInDBPromise(token, successResult)
                       .then(function(){
-                        console.log("Calling logoutRouter(invalidateTokenInDBPromise)...");
                         self.invalidateTokenInDBPromise(token)
                             .then(function(){
                               response.status(201)
