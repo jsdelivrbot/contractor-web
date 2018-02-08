@@ -86,6 +86,25 @@ var ProjectRouter = function() {
     }
 
     /**
+     * Update an existing project record (by id).
+     */
+    self.updateProject = function(params){
+      var defer = self.Q.defer();
+
+      if(params.name && params.id) {
+        self.existProject({id:params.id})
+            .then(function(result) {
+              self.updateProject(params);
+            }, function(error) {
+              res.status(201)
+                 .json({status: self.const.FAILED, error:error});
+            });
+      }
+
+      return defer.promise;
+    }
+
+    /**
      * Search projects.
      */
     self.fetchProjectRouter = function() {
@@ -144,7 +163,15 @@ var ProjectRouter = function() {
      * Update projects.
      */
     self.updateProjectRouter = function() {
-      self.router.put('/', function(req, response) {
+      self.router.put('/', self.checkToken, function(req, response) {
+        self.updateProject(req.body)
+            .then(function(status){
+                response.status(201).json({status: status});
+            }, function(error){
+                response.status(201)
+                        .json({status: self.const.FAILED,
+                               error:error});
+            });
       });
     };
 
