@@ -92,5 +92,5 @@ var MainApp = function() {
  *  main():  Main code.
  */
 var app = new MainApp();
-app.initialize();
-app.start();
+//app.initialize();
+//app.start();
