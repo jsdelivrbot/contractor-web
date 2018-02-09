@@ -3,7 +3,7 @@
 module.exports = (function() {
 
     /**
-     *
+     * Fetch Data Generic
      */
     var fetchDataInner = function(query, data) {
         var q     = require('q');
